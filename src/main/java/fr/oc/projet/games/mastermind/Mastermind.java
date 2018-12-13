@@ -1,6 +1,7 @@
-package fr.oc.projet.games;
+package fr.oc.projet.games.mastermind;
 
 import fr.oc.projet.enums.GameModeEnum;
+import fr.oc.projet.games.Game;
 import fr.oc.projet3.launcher.LoadProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

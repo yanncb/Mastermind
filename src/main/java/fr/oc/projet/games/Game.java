@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Game {
     private String user;
-    private GameModeEnum modeDeJeu; //= GameModeEnum.CHALLENGER;
+    private GameModeEnum modeDeJeu;
     private int resultat;
     private int nombreDessais;
     private String description;

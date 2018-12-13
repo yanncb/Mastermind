@@ -1,6 +1,7 @@
-package fr.oc.projet.games;
+package fr.oc.projet.games.recherchePlusMoins;
 
 import fr.oc.projet.enums.GameModeEnum;
+import fr.oc.projet.games.Game;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,8 +36,6 @@ public class RecherchePlusMoins extends Game {
      */
     public void play() {
         logger.info(" Recherche Plus Moins !");
-
-
     }
 
 
