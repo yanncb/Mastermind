@@ -68,7 +68,6 @@ public class Main {
 
     /**
      * Choisir le mode de jeu
-     *
      * @return le mode selectionné
      */
     private static Integer selectGameMode() { //méthode pour recuperer le mode de jeu avec If
@@ -150,6 +149,5 @@ public class Main {
 
         return sc.nextInt();
     }
-
 
 }
