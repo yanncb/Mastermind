@@ -72,7 +72,7 @@ public class Mastermind extends Game {
         int[] saisiePlayer = new int[nbCaseValue]; // initialisation d'un tableau pour recuperer les saisie utilisateur.
         boolean victoire = false;
         do {
-            System.out.println("\nEssai n° " + (counter + 1) + "/" + LoadProperties.NB_RETRY_VALUE + " :");
+            logger.info("\nEssai n° {} /  {} +  :",(counter + 1),LoadProperties.NB_RETRY_VALUE);
             int nombreSaisi = sc.nextInt();
 
             String saisie = String.valueOf(nombreSaisi);
@@ -82,15 +82,15 @@ public class Mastermind extends Game {
             }
 
             // On écrit la proposition du joueur
-            System.out.println(Arrays.toString(saisiePlayer));
+            logger.info(Arrays.toString(saisiePlayer));
 
             victoire = true; // on met à vrai pour l'instant
             for (int i = 0; i < nbCaseValue; i++) {
                 boolean bonChiffre = saisiePlayer[i] == resultatDuRandom[i];
                 if (bonChiffre) {
-                    System.out.println(getOK());
+                    logger.info(getOK());
                 } else {
-                    System.out.println(getKO());
+                    logger.info(getKO());
                 }
                 victoire = victoire && bonChiffre; // victoire sera vrai UNIQUEMENT si bonChiffre vaut vrai a CHAQUE tour de boucle
             }
@@ -98,10 +98,10 @@ public class Mastermind extends Game {
             counter++;
 
             if (counter == nbCaseValue)
-                System.out.println("Vos chances sont épuisés " + nbCaseValue + " essais, c'est perdu pour vous...");
+                logger.info("Vos chances sont épuisés {} essais, c'est perdu pour vous...",nbCaseValue );
 
         } while (!victoire && counter < Integer.parseInt(LoadProperties.NB_RETRY_VALUE));
-        System.out.println("En seulement " + counter + " coups");
+        logger.info("En seulement {} coups" ,counter );
         sc.close();
     }
 }

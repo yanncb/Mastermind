@@ -55,9 +55,9 @@ public class Main {
 
             Integer choice = selectGameType();
             Game game = getGame(choice);
-            logger.info("Vous entrez dans le jeux " + game.getClass().getSimpleName());
+            logger.info("Vous entrez dans le jeux {}" ,game.getClass().getSimpleName());
             Integer mode = selectGameMode();
-            logger.info("Vous avez choisi le mode " + GameModeEnum.getMode(mode));
+            logger.info("Vous avez choisi le mode {}", GameModeEnum.getMode(mode));
             game.setModeDeJeu(GameModeEnum.getMode(mode));
             game.setDevMod(Constants.MOD_DEV.equals(devOrProd));
             game.play();
@@ -74,7 +74,7 @@ public class Main {
     private static Integer selectGameMode() { //méthode pour recuperer le mode de jeu avec If
         logger.info("Choisissez votre mode de jeux : ");
         for(GameModeEnum gameModeEnum : GameModeEnum.values()){  // GameModeEnum.values liste des enums de gamemode. La boucle for sert à parcourir les elements de ma liste enumere.
-            logger.info(("Pour " + gameModeEnum.name() + " tapez " + gameModeEnum.getCode()));
+            logger.info("Pour {} tapez {}" ,gameModeEnum.getCode(),gameModeEnum.name());
         }
 
         int mode = sc.nextInt();
