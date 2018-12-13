@@ -42,18 +42,61 @@ public class Mastermind extends Game {
     public void play() {
 
         // switch case pour les modes chall, duel etc.
+        switch (getModeDeJeu().getCode()) {
+            case 1: {
+                jouerMastermindSimple();
+                break;
+            }
+            case 2: {
+                jouerMastermindDefenseur();
+                break;
+            }
+            case 3: {
+                jouerMastermindChallenger();
+                break;
+            }
+            default: {
+                logger.info("Vous avez rentré un numéro qui ne correspond à aucun choix");
+                System.exit(-1);
+            }
 
+        }
+
+
+
+    }
+
+
+    private int [] saisieClavier() {
+        int nbCase = Integer.parseInt(LoadProperties.NB_CASE_VALUE);
+        int[] saisiePlayer = new int[nbCase];
+        Scanner sc = new Scanner(System.in);
+        int nombreSaisi = sc.nextInt();
+
+        String saisie = String.valueOf(nombreSaisi);
+
+        for (int i = 0; i < nbCase; i++) {
+            saisiePlayer[i] = Integer.parseInt(String.valueOf(saisie.charAt(i)));// transformer la saisie en tableau.
+        }
+        sc.close();
+        return saisiePlayer;
+    }
+
+    private void commencerJeux(){
+        logger.info("Nombres d'essais : {}", LoadProperties.NB_RETRY_VALUE);
+        logger.info("Nombres d'objets : {}", LoadProperties.NB_ITEM_VALUE);
+        logger.info("Nombres de cases à trouver : {}", LoadProperties.NB_CASE_VALUE);
+    }
+
+    private void jouerMastermindSimple(){
+
+        commencerJeux();
 
         int nbCaseValue = Integer.parseInt(LoadProperties.NB_CASE_VALUE);
         int[] resultatDuRandom = new int[nbCaseValue];
         Random random = new Random();
 
-        Scanner sc = new Scanner(System.in);
 
-
-        logger.info("Nombres d'essais : {}", LoadProperties.NB_RETRY_VALUE);
-        logger.info("Nombres d'objets : {}", LoadProperties.NB_ITEM_VALUE);
-        logger.info("Nombres de cases à trouver : {}", LoadProperties.NB_CASE_VALUE);
         /**
          * Je genere mon code à découvrir dans le Mastermind avec random.
          */
@@ -70,17 +113,11 @@ public class Mastermind extends Game {
         logger.info("Attention, vous avez droit à {} essais.", LoadProperties.NB_RETRY_VALUE);
         logger.info("----------------------------");
 
-        int[] saisiePlayer = new int[nbCaseValue]; // initialisation d'un tableau pour recuperer les saisie utilisateur.
+//        int[] saisiePlayer = new int[nbCaseValue]; // initialisation d'un tableau pour recuperer les saisie utilisateur.
         boolean victoire = false;
         do {
             logger.info("\nEssai n° {} /  {} +  :",(counter + 1),LoadProperties.NB_RETRY_VALUE);
-            int nombreSaisi = sc.nextInt();
-
-            String saisie = String.valueOf(nombreSaisi);
-
-            for (int i = 0; i < nbCaseValue; i++) {
-                saisiePlayer[i] = Integer.parseInt(String.valueOf(saisie.charAt(i)));// transformer la saisie en tableau.
-            }
+            int[] saisiePlayer = saisieClavier();
 
             // On écrit la proposition du joueur
             logger.info(Arrays.toString(saisiePlayer));
@@ -103,7 +140,16 @@ public class Mastermind extends Game {
 
         } while (!victoire && counter < Integer.parseInt(LoadProperties.NB_RETRY_VALUE));
         logger.info("En seulement {} coups" ,counter );
-        sc.close();
+
+    }
+
+    private void jouerMastermindChallenger() {
+        commencerJeux();
+    }
+
+    private void jouerMastermindDefenseur() {
+        commencerJeux();
+
     }
 }
 

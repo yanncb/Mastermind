@@ -87,6 +87,32 @@ public class Main {
         return mode;
     }
 
+//    private static Mastermind launchMode(Integer mode) {
+//        Mastermind mastermind = null;
+//        switch (mode) {
+//            case 1:{
+//                mastermind = new Mastermind();
+//                break;
+//            }
+//            case 2:{
+//                mastermind = new MasterMindDefenseur();
+//                MasterMindDefenseur masterMindDefenseur = new MasterMindDefenseur();
+//                break;
+//            }
+//            case 3 :{
+//                mastermind = new MastermindDuel();
+//                MastermindDuel mastermindDuel = new MastermindDuel();
+//                break;
+//            }
+//            default: {
+//                logger.info("Vous avez rentré un numéro qui ne correspond à aucun choix");
+//                System.exit(-1);
+//            }
+//
+//        }
+//        return mastermind;
+//    }
+
     /**
      * Permet de choisir le type de jeu
      *
