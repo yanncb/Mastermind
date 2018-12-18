@@ -2,14 +2,12 @@ package fr.oc.projet.games.mastermind;
 
 import fr.oc.projet.enums.GameModeEnum;
 import fr.oc.projet.games.Game;
-import fr.oc.projet3.launcher.Constants;
 import fr.oc.projet3.launcher.LoadProperties;
+import fr.oc.projet3.launcher.Main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Mastermind extends Game {
@@ -71,12 +69,11 @@ public class Mastermind extends Game {
      */
     private void jouerMastermindSimple() {
 
-             commencerJeux();
+        commencerJeux();
 
         int nbCaseValue = Integer.parseInt(LoadProperties.NB_CASE_VALUE);
-        int[] randomEnCours =creationDuRandom();
+        int[] randomEnCours = creationDuRandom();
         int[] resultatDuRandom = new int[nbCaseValue];
-
 
 
         logger.info(getModeDeJeu());
@@ -117,7 +114,9 @@ public class Mastermind extends Game {
         } while (!victoire && counter < Integer.parseInt(LoadProperties.NB_RETRY_VALUE));
         logger.info("En seulement {} coups", counter);
 
+
     }
+
     /**
      * Methode qui permet de lancer le jeu en mode Mastermind Challenger
      */
@@ -125,19 +124,38 @@ public class Mastermind extends Game {
         commencerJeux();
         creationDuRandom();
     }
+
     /**
      * Methode qui permet de lancer le jeu en mode Mastermind Defenseur
      */
     private void jouerMastermindDefenseur() {
+        int nbCase = Integer.parseInt(LoadProperties.NB_CASE_VALUE); // cast de NB_CASE_VALUE en Interger
         commencerJeux();
+        //creationDuRandom();
         logger.info("Vous êtes en mode : Defenseur et vous devez donc inscrire un code que l'ordinateur vas tenter de deviner");
-        int saisieCode[] = saisieClavier();
-        logger.info("Votre code est : {}",saisieCode);
+        int[] randomm = creationDuRandom();
+        int[] saisieClavier = saisieClavier();
+        int nombre = 1;
+        // ************************************ A FINIR Boucle FOR pour recup données saisie par l'ordi et les comparer avec l'utilisateur.*****************************************
+        int counter = 0;
 
+        for (int i = 0; i < nbCase; i++) { // boucle for qui me sert à parcourir la saisie utilisateur et la comparé à la valeur aleatoire creer par l'ordinateur, et quand il y a un bon chiffre à valider.
+
+
+            for (int j = 0; j < nbCase; j++)    //boucle fonctionne mais reprend plusieurs fois le meme numero. trouver un moyen d'extraire un chiffre une fois qu'il vaut celui de l'autre tableau
+                if (saisieClavier[i] == randomm[j]) {
+
+
+                    logger.info("Vous avez {} nombres qui correspondent {}", (nombre), saisieClavier[i]);
+                    nombre++;
+                } else logger.info("ce chiffre ne correpond pas ");
+        }
     }
+
 
     /**
      * Methode qui comme son nom l'indique permet de recuperer les saisie claviers en les mettant dans un tableau de int.
+     *
      * @return saisieplayer
      */
     private int[] saisieClavier() {
@@ -160,11 +178,11 @@ public class Mastermind extends Game {
      */
     private void commencerJeux() {
         logger.info("Nombres d'essais : {}", LoadProperties.NB_RETRY_VALUE);
-       // logger.info("Nombres d'objets : {}", LoadProperties.NB_ITEM_VALUE);
+        // logger.info("Nombres d'objets : {}", LoadProperties.NB_ITEM_VALUE);
         logger.info("Nombres de cases à trouver : {}", LoadProperties.NB_CASE_VALUE);
     }
 
-    private int [] creationDuRandom(){  // a verifier.
+    private static int[] creationDuRandom() {  // a verifier.
 
         int nbCaseValue = Integer.parseInt(LoadProperties.NB_CASE_VALUE);
         int[] resultatDuRandom = new int[nbCaseValue];
@@ -178,12 +196,17 @@ public class Mastermind extends Game {
             resultatDuRandom[i] = random.nextInt(nbCaseValue + 1);
         }
 
-        if (Constants.MOD_DEV.equals("DEV")){
-            logger.info("Le code à découvrir est : {}", Arrays.toString(resultatDuRandom));
+        if (Main.devOrProd.equals("DEV")) {
+            logger.info("Le code genere par l'ordinateur aleatoirement est : {}", Arrays.toString(resultatDuRandom));
         }
+
+
         return resultatDuRandom;
     }
+
+
 }
+
 
 
 

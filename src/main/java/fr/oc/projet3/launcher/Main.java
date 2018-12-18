@@ -13,10 +13,10 @@ public class Main {
     private static final Scanner sc = new Scanner(System.in);
     private static final Logger logger = LogManager.getLogger(Main.class);
     static Game game = new Game();
-
+    public static String devOrProd;
 
     public static void main(String[] args) {
-        String devOrProd = null;
+
         if (args.length > 0) {
             switch (args[0]) {
                 case Constants.MOD_DEV:
@@ -29,29 +29,34 @@ public class Main {
                     break;
                 default:
                     logger.error("Le mode {} n'existe pas.", args[0]);
+
             }
         } else {
             logger.info("Pas de parametres, verification dans le fichier de proprietes.");
-            // mettre un switch au lieu du if
-            if (Constants.MOD_DEV.equals(LoadProperties.MOD_DEV_VALUE)) {
-
-                devOrProd = Constants.MOD_DEV;
-                logger.info("Mode Dev");
-
-
-            } else if (LoadProperties.MOD_DEV_VALUE.equals("PROD")) {
-
-                devOrProd = Constants.MOD_PROD;
-                logger.info("Mode PROD");
-
-            } else {
-                logger.info("Aucun mode detecté dans les properties.");
-
+            switch (LoadProperties.MOD_DEV_VALUE) {
+                case Constants.MOD_DEV:
+                    devOrProd = Constants.MOD_DEV;
+                    logger.info("mode DEV");
+                    break;
+                case Constants.MOD_PROD:
+                    devOrProd = Constants.MOD_PROD;
+                    logger.info("Mode PROD");
+                    break;
+                default:
+                    logger.info("Aucun mode detecté dans les properties.");
             }
+//            if (Constants.MOD_DEV.equals(LoadProperties.MOD_DEV_VALUE)) {
+//                devOrProd = Constants.MOD_DEV;
+//                logger.info("Mode Dev");
+//            } else if (LoadProperties.MOD_DEV_VALUE.equals("PROD")) {
+//                devOrProd = Constants.MOD_PROD;
+//                logger.info("Mode PROD");
+//            } else {
+//                logger.info("Aucun mode detecté dans les properties.");
+//            }
         }
         // executer le jeu ici :
         if (devOrProd != null) {
-
 
             Integer choice = selectGameType();
             Game game = getGame(choice);
@@ -68,6 +73,7 @@ public class Main {
 
     /**
      * Choisir le mode de jeu
+     *
      * @return le mode selectionné
      */
     private static Integer selectGameMode() { //méthode pour recuperer le mode de jeu avec If
@@ -75,17 +81,13 @@ public class Main {
         for (GameModeEnum gameModeEnum : GameModeEnum.values()) {  // GameModeEnum.values liste des enums de gamemode. La boucle for sert à parcourir les elements de ma liste enumere.
             logger.info("Pour {} tapez {}", gameModeEnum.getCode(), gameModeEnum.name());
         }
-
         int mode = sc.nextInt();
         if (mode > GameModeEnum.values().length || mode < 0) { // le gamemodeenum.values permet de recuperer le tableau et le .lenght permet de comparer la longueur. ça permet egalement de pouvoir modifier les données par la suite (nombres de chiffres du mastermind).
             logger.info("Vous avez choisi une valeur hors interval");
             System.exit(-2);
-
-
         }
         return mode;
     }
-
 //    private static Mastermind launchMode(Integer mode) {
 //        Mastermind mastermind = null;
 //        switch (mode) {
@@ -149,5 +151,4 @@ public class Main {
 
         return sc.nextInt();
     }
-
 }
