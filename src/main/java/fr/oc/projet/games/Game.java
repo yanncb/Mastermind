@@ -2,6 +2,7 @@ package fr.oc.projet.games;
 
 import fr.oc.projet.enums.GameModeEnum;
 import fr.oc.projet3.launcher.LoadProperties;
+import fr.oc.projet3.launcher.Main;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -68,7 +69,20 @@ public class Game {
         sc = new Scanner(System.in);
 
     }
-
+    public void retrymod() {  //------------------------------------------------------------------A VERIFIER
+        logger.info("Souhaitez vous refaire une partie ? Si oui Tapez 1, Si non Tapez 2");
+        int retry = sc.nextInt();
+            switch (retry){
+                case 1 :
+                   // relancer le jeu
+                    break;
+                case 2 :
+                    logger.info("Aurevoir !");
+                    break;
+                default:
+                    logger.info("Saisie invalide le jeu vas se terminer. Vous pouvez relancer le jeu à tout moment ! Au revoir !");
+            }
+    }
     /**
      * Getter User
      *

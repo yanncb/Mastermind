@@ -110,10 +110,10 @@ public class Mastermind extends Game {
 
             if (counter == nbCaseValue)
                 logger.info("Vos chances sont épuisés {} essais, c'est perdu pour vous...", nbCaseValue);
-
+//                retrymod();
         } while (!victoire && counter < Integer.parseInt(LoadProperties.NB_RETRY_VALUE));
         logger.info("En seulement {} coups", counter);
-
+//        retrymod();
 
     }
 
@@ -131,25 +131,34 @@ public class Mastermind extends Game {
     private void jouerMastermindDefenseur() {
         int nbCase = Integer.parseInt(LoadProperties.NB_CASE_VALUE); // cast de NB_CASE_VALUE en Interger
         commencerJeux();
-        //creationDuRandom();
         logger.info("Vous êtes en mode : Defenseur et vous devez donc inscrire un code que l'ordinateur vas tenter de deviner");
         int[] randomm = creationDuRandom();
-        int[] saisieClavier = saisieClavier();
-        int nombre = 1;
-        // ************************************ A FINIR Boucle FOR pour recup données saisie par l'ordi et les comparer avec l'utilisateur.*****************************************
         int counter = 0;
-
-        for (int i = 0; i < nbCase; i++) { // boucle for qui me sert à parcourir la saisie utilisateur et la comparé à la valeur aleatoire creer par l'ordinateur, et quand il y a un bon chiffre à valider.
-
-
-            for (int j = 0; j < nbCase; j++)    //boucle fonctionne mais reprend plusieurs fois le meme numero. trouver un moyen d'extraire un chiffre une fois qu'il vaut celui de l'autre tableau
-                if (saisieClavier[i] == randomm[j]) {
-
-
-                    logger.info("Vous avez {} nombres qui correspondent {}", (nombre), saisieClavier[i]);
-                    nombre++;
-                } else logger.info("ce chiffre ne correpond pas ");
+        logger.info("\nEssai n° {} /  {}   :", (counter + 1), LoadProperties.NB_RETRY_VALUE);
+        int[] saisieClavier = saisieClavier();
+        logger.info("(Combinaison secrete : {}",saisieClavier);
+        int nbPresent = 0;
+        int nbBonnePlace = 0;
+        for (int i = 0; i < nbCase; i++) {
+            int chiffreCourant = saisieClavier[i];
+            boolean existDansLeTableau = false;
+            boolean estALaBonnePlace = false;
+            for (int j = 0; j < nbCase; j++) {
+                if (chiffreCourant == randomm[j]) {
+                    existDansLeTableau = true;
+                    if (j == i) {
+                        estALaBonnePlace = true;
+                    }
+                }
+            }
+            if (existDansLeTableau && !estALaBonnePlace) {
+                nbPresent++;
+            }
+            if (estALaBonnePlace) {
+                nbBonnePlace++;
+            }
         }
+        logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", saisieClavier, nbPresent, nbBonnePlace);
     }
 
 
@@ -165,11 +174,9 @@ public class Mastermind extends Game {
         //int nombreSaisi = sc.nextInt(); // variable nbsaisie pour stocker ma variable ----------------------------------- A FAIRe modif pour stocker 0000 par exemple.
         String nombreSaisi = sc.nextLine();
         //String saisie = String.valueOf(nombreSaisi);
-
         for (int i = 0; i < nbCase; i++) {
             saisiePlayer[i] = Integer.parseInt(String.valueOf(nombreSaisi.charAt(i)));// transformer la saisie en tableau.
         }
-
         return saisiePlayer;
     }
 
