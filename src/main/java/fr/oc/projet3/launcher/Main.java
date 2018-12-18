@@ -45,15 +45,6 @@ public class Main {
                 default:
                     logger.info("Aucun mode detecté dans les properties.");
             }
-//            if (Constants.MOD_DEV.equals(LoadProperties.MOD_DEV_VALUE)) {
-//                devOrProd = Constants.MOD_DEV;
-//                logger.info("Mode Dev");
-//            } else if (LoadProperties.MOD_DEV_VALUE.equals("PROD")) {
-//                devOrProd = Constants.MOD_PROD;
-//                logger.info("Mode PROD");
-//            } else {
-//                logger.info("Aucun mode detecté dans les properties.");
-//            }
         }
         // executer le jeu ici :
         if (devOrProd != null) {

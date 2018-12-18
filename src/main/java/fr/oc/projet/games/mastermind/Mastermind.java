@@ -69,53 +69,99 @@ public class Mastermind extends Game {
      */
     private void jouerMastermindSimple() {
 
+        int nbCase = Integer.parseInt(LoadProperties.NB_CASE_VALUE); // cast de NB_CASE_VALUE en Interger
         commencerJeux();
-
-        int nbCaseValue = Integer.parseInt(LoadProperties.NB_CASE_VALUE);
-        int[] randomEnCours = creationDuRandom();
-        int[] resultatDuRandom = new int[nbCaseValue];
-
-
-        logger.info(getModeDeJeu());
-
+        logger.info("Vous êtes en mode : Defenseur et vous devez donc inscrire un code que l'ordinateur vas tenter de deviner");
+        int[] randomm = creationDuRandom();
         int counter = 0;
+        int nbPresent;
+        int nbBonnePlace;
 
-        logger.info("Mastermind, trouve la combinaison des {} chiffres entre 0 et 9 .", LoadProperties.NB_CASE_VALUE);
-        logger.info("{} siginife que c'est le bon chiffre à la bonne place et {} signifie que c'est le mauvais chiffre.", getOK(), getKO());
-        logger.info("Attention, vous avez droit à {} essais.", LoadProperties.NB_RETRY_VALUE);
-        logger.info("----------------------------");
+        logger.info("(Combinaison secrete : {}", randomm);
 
-//        int[] saisiePlayer = new int[nbCaseValue]; // initialisation d'un tableau pour recuperer les saisie utilisateur.
-
-        boolean victoire = false;
         do {
+            nbPresent = 0;
+            nbBonnePlace = 0;
             logger.info("\nEssai n° {} /  {}   :", (counter + 1), LoadProperties.NB_RETRY_VALUE);
-            int[] saisiePlayer = saisieClavier();
+            int[] saisieClavier = saisieClavier();
+            for (int i = 0; i < nbCase; i++) {
+                int chiffreCourant = saisieClavier[i];
+                boolean existDansLeTableau = false;
+                boolean estALaBonnePlace = false;
 
-            // On écrit la proposition du joueur
-            logger.info(Arrays.toString(saisiePlayer));
-
-            victoire = true; // on met à vrai pour l'instant
-            for (int i = 0; i < nbCaseValue; i++) {
-                boolean bonChiffre = randomEnCours[i] == saisiePlayer[i];
-                if (bonChiffre) {
-                    logger.info(getOK());
-                } else {
-                    logger.info(getKO());
+                for (int j = 0; j < nbCase; j++) {
+                    if (chiffreCourant == randomm[j]) {
+                        existDansLeTableau = true;
+                    }
                 }
-                victoire = victoire && bonChiffre; // victoire sera vrai UNIQUEMENT si bonChiffre vaut vrai a CHAQUE tour de boucle
+
+                if (chiffreCourant == randomm[i]) {
+                    estALaBonnePlace = true;
+                }
+
+                if (existDansLeTableau && !estALaBonnePlace) {
+                    nbPresent++;
+                }
+                if (estALaBonnePlace) {
+                    nbBonnePlace++;
+                }
             }
-
             counter++;
+            logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", saisieClavier, nbPresent, nbBonnePlace);
+        } while (!LoadProperties.NB_RETRY_VALUE.equals(counter) || !LoadProperties.NB_CASE_VALUE.equals(nbBonnePlace));
+        logger.info("Bravo !!! Tu gagne en {} essais ", counter);
 
-            if (counter == nbCaseValue)
-                logger.info("Vos chances sont épuisés {} essais, c'est perdu pour vous...", nbCaseValue);
-//                retrymod();
-        } while (!victoire && counter < Integer.parseInt(LoadProperties.NB_RETRY_VALUE));
-        logger.info("En seulement {} coups", counter);
-//        retrymod();
 
     }
+
+//
+//        commencerJeux();
+//
+//        int nbCaseValue = Integer.parseInt(LoadProperties.NB_CASE_VALUE);
+//        int[] randomEnCours = creationDuRandom();
+//        int[] resultatDuRandom = new int[nbCaseValue];
+//
+//
+//        logger.info(getModeDeJeu());
+//
+//        int counter = 0;
+//
+//        logger.info("Mastermind, trouve la combinaison des {} chiffres entre 0 et 9 .", LoadProperties.NB_CASE_VALUE);
+//        logger.info("{} siginife que c'est le bon chiffre à la bonne place et {} signifie que c'est le mauvais chiffre.", getOK(), getKO());
+//        logger.info("Attention, vous avez droit à {} essais.", LoadProperties.NB_RETRY_VALUE);
+//        logger.info("----------------------------");
+//
+////        int[] saisiePlayer = new int[nbCaseValue]; // initialisation d'un tableau pour recuperer les saisie utilisateur.
+//
+//        boolean victoire = false;
+//        do {
+//            logger.info("\nEssai n° {} /  {}   :", (counter + 1), LoadProperties.NB_RETRY_VALUE);
+//            int[] saisiePlayer = saisieClavier();
+//
+//            // On écrit la proposition du joueur
+//            logger.info(Arrays.toString(saisiePlayer));
+//
+//            victoire = true; // on met à vrai pour l'instant
+//            for (int i = 0; i < nbCaseValue; i++) {
+//                boolean bonChiffre = randomEnCours[i] == saisiePlayer[i];
+//                if (bonChiffre) {
+//                    logger.info(getOK());
+//                } else {
+//                    logger.info(getKO());
+//                }
+//                victoire = victoire && bonChiffre; // victoire sera vrai UNIQUEMENT si bonChiffre vaut vrai a CHAQUE tour de boucle
+//            }
+//
+//            counter++;
+//
+//            if (counter == nbCaseValue)
+//                logger.info("Vos chances sont épuisés {} essais, c'est perdu pour vous...", nbCaseValue);
+////                retrymod();
+//        } while (!victoire && counter < Integer.parseInt(LoadProperties.NB_RETRY_VALUE));
+//        logger.info("En seulement {} coups", counter);
+////        retrymod();
+//
+//    }
 
     /**
      * Methode qui permet de lancer le jeu en mode Mastermind Challenger
@@ -136,31 +182,38 @@ public class Mastermind extends Game {
         int counter = 0;
         logger.info("\nEssai n° {} /  {}   :", (counter + 1), LoadProperties.NB_RETRY_VALUE);
         int[] saisieClavier = saisieClavier();
-        logger.info("(Combinaison secrete : {}",saisieClavier);
+        logger.info("(Combinaison secrete : {}", saisieClavier);
         int nbPresent = 0;
         int nbBonnePlace = 0;
-        for (int i = 0; i < nbCase; i++) {
-            int chiffreCourant = saisieClavier[i];
-            boolean existDansLeTableau = false;
-            boolean estALaBonnePlace = false;
-            for (int j = 0; j < nbCase; j++) {
-                if (chiffreCourant == randomm[j]) {
-                    existDansLeTableau = true;
-                    if (j == i) {
-                        estALaBonnePlace = true;
+        do {
+
+            for (int i = 0; i < nbCase; i++) {
+                int chiffreCourant = saisieClavier[i];
+                boolean existDansLeTableau = false;
+                boolean estALaBonnePlace = false;
+                for (int j = 0; j < nbCase; j++) {
+                    if (chiffreCourant == randomm[j]) {
+                        existDansLeTableau = true;
+                        if (j == i) {
+                            estALaBonnePlace = true;
+                        }
                     }
                 }
+                if (existDansLeTableau && !estALaBonnePlace) {
+                    nbPresent++;
+                }
+                if (estALaBonnePlace) {
+                    nbBonnePlace++;
+                    int[] ChiffreAMettreDansMaSoluce = new int[nbCase];
+                    ChiffreAMettreDansMaSoluce[i] = saisieClavier[i];
+                    Random randomApresSoluce = new Random(ChiffreAMettreDansMaSoluce.length);
+                }
             }
-            if (existDansLeTableau && !estALaBonnePlace) {
-                nbPresent++;
-            }
-            if (estALaBonnePlace) {
-                nbBonnePlace++;
-            }
-        }
-        logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", saisieClavier, nbPresent, nbBonnePlace);
+            counter++;
+            logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", randomm, nbPresent, nbBonnePlace);
+        } while (LoadProperties.NB_RETRY_VALUE.equals(counter) || LoadProperties.NB_CASE_VALUE.equals(nbBonnePlace));
+        logger.info("Bravo !!! Tu gagne en {} essais ", counter);
     }
-
 
     /**
      * Methode qui comme son nom l'indique permet de recuperer les saisie claviers en les mettant dans un tableau de int.
@@ -210,7 +263,6 @@ public class Mastermind extends Game {
 
         return resultatDuRandom;
     }
-
 
 }
 
