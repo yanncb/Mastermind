@@ -67,15 +67,16 @@ public class Mastermind extends Game {
     /**
      * Methode qui permet de lancer le jeu en mode Mastermind simple
      */
-    private void jouerMastermindSimple() {
+    private void jouerMastermindSimple() {  // terminé !!
 
         int nbCase = Integer.parseInt(LoadProperties.NB_CASE_VALUE); // cast de NB_CASE_VALUE en Interger
         commencerJeux();
-        logger.info("Vous êtes en mode : Defenseur et vous devez donc inscrire un code que l'ordinateur vas tenter de deviner");
+        logger.info("Vous êtes en mode : Mastermind vous devez tentez de deviner un code que l'ordinateur vas generer !");
         int[] randomm = creationDuRandom();
         int counter = 0;
         int nbPresent;
         int nbBonnePlace;
+        int nbRetry = Integer.parseInt(LoadProperties.NB_RETRY_VALUE);
 
         logger.info("(Combinaison secrete : {}", randomm);
 
@@ -86,14 +87,9 @@ public class Mastermind extends Game {
             int[] saisieClavier = saisieClavier();
             for (int i = 0; i < nbCase; i++) {
                 int chiffreCourant = saisieClavier[i];
-                boolean existDansLeTableau = false;
                 boolean estALaBonnePlace = false;
 
-                for (int j = 0; j < nbCase; j++) {
-                    if (chiffreCourant == randomm[j]) {
-                        existDansLeTableau = true;
-                    }
-                }
+                boolean existDansLeTableau = existDansLeTableau(chiffreCourant, randomm);
 
                 if (chiffreCourant == randomm[i]) {
                     estALaBonnePlace = true;
@@ -108,10 +104,29 @@ public class Mastermind extends Game {
             }
             counter++;
             logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", saisieClavier, nbPresent, nbBonnePlace);
-        } while (!LoadProperties.NB_RETRY_VALUE.equals(counter) || !LoadProperties.NB_CASE_VALUE.equals(nbBonnePlace));
-        logger.info("Bravo !!! Tu gagne en {} essais ", counter);
+        } while (nbCase != (nbBonnePlace) && nbRetry != (counter));
+        if (counter == nbRetry) {
+            logger.info("Tu as PERDU !!! tu as atteint tes {} essais ", counter);
+        } else {
+            logger.info("Bravo !!! Tu gagne en {} essais ", counter);
+        }
 
+    }
 
+    /**
+     * Retourne vrai si le nombre nombreRecherche existe dans le tableau. Sinon retourne faux.
+     *
+     * @param nombreRecherche Nombre recherché dans le tableau
+     * @param tableau         Tableau dans lequel on cherche le nombre
+     * @return
+     */
+    private static boolean existDansLeTableau(int nombreRecherche, int[] tableau) {
+        for (int j = 0; j < tableau.length; j++) {
+            if (nombreRecherche == tableau[j]) {
+                return true;
+            }
+        }
+        return false;
     }
 
 //
@@ -180,39 +195,46 @@ public class Mastermind extends Game {
         logger.info("Vous êtes en mode : Defenseur et vous devez donc inscrire un code que l'ordinateur vas tenter de deviner");
         int[] randomm = creationDuRandom();
         int counter = 0;
-        logger.info("\nEssai n° {} /  {}   :", (counter + 1), LoadProperties.NB_RETRY_VALUE);
-        int[] saisieClavier = saisieClavier();
-        logger.info("(Combinaison secrete : {}", saisieClavier);
-        int nbPresent = 0;
-        int nbBonnePlace = 0;
-        do {
+        int nbPresent;
+        int nbBonnePlace;
+        int nbRetry = Integer.parseInt(LoadProperties.NB_RETRY_VALUE);
+        int[] nombrePourLaSolutionPc = new int[nbCase];
+        logger.info("(Proposition faite par l'ordinateur : {}", randomm);
 
+        do {
+            nbPresent = 0;
+            nbBonnePlace = 0;
+        //    randomm.length = nbCase - nbBonnePlace;
+//            logger.info("\nEssai n° {} /  {}   :", (counter + 1), LoadProperties.NB_RETRY_VALUE);   deplacer valeur apres saisie pc/
+            int[] saisieClavier = saisieClavier();
             for (int i = 0; i < nbCase; i++) {
-                int chiffreCourant = saisieClavier[i];
-                boolean existDansLeTableau = false;
+                int chiffreCourant = randomm[i];
                 boolean estALaBonnePlace = false;
-                for (int j = 0; j < nbCase; j++) {
-                    if (chiffreCourant == randomm[j]) {
-                        existDansLeTableau = true;
-                        if (j == i) {
-                            estALaBonnePlace = true;
-                        }
-                    }
+
+                boolean existeDansLeTableau = existDansLeTableau(chiffreCourant, saisieClavier);
+
+                if (chiffreCourant == saisieClavier[i]) {
+                    estALaBonnePlace = true;
                 }
-                if (existDansLeTableau && !estALaBonnePlace) {
+
+                if (existeDansLeTableau && !estALaBonnePlace) {
                     nbPresent++;
                 }
                 if (estALaBonnePlace) {
                     nbBonnePlace++;
-                    int[] ChiffreAMettreDansMaSoluce = new int[nbCase];
-                    ChiffreAMettreDansMaSoluce[i] = saisieClavier[i];
-                    Random randomApresSoluce = new Random(ChiffreAMettreDansMaSoluce.length);
+                    nombrePourLaSolutionPc[i] = randomm[i];  // recup de la bonne valeur et mise dans tableau à la valeur de i.
+
                 }
             }
             counter++;
-            logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", randomm, nbPresent, nbBonnePlace);
-        } while (LoadProperties.NB_RETRY_VALUE.equals(counter) || LoadProperties.NB_CASE_VALUE.equals(nbBonnePlace));
-        logger.info("Bravo !!! Tu gagne en {} essais ", counter);
+            logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", saisieClavier, nbPresent, nbBonnePlace);
+        } while (nbCase != (nbBonnePlace) && nbRetry != (counter));
+        if (counter == nbRetry) {
+            logger.info("Bravo ta combinaison n'a pas été trouvée en {} essais ", counter);
+        } else {
+            logger.info("Désolé l'ordinateur gagne en {} essais ", counter);
+        }
+
     }
 
     /**
@@ -256,9 +278,9 @@ public class Mastermind extends Game {
             resultatDuRandom[i] = random.nextInt(nbCaseValue + 1);
         }
 
-        if (Main.devOrProd.equals("DEV")) {
-            logger.info("Le code genere par l'ordinateur aleatoirement est : {}", Arrays.toString(resultatDuRandom));
-        }
+//        if (Main.devOrProd.equals("DEV")) {
+//            logger.info("Le code genere par l'ordinateur aleatoirement est : {}", Arrays.toString(resultatDuRandom));
+//        }
 
 
         return resultatDuRandom;
