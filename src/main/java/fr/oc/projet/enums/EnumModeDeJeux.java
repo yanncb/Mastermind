@@ -1,6 +1,6 @@
 package fr.oc.projet.enums;
 
-public enum GameModeEnum { // permet de faire des choix uniques
+public enum EnumModeDeJeux { // permet de faire des choix uniques
     CHALLENGER(1),
     DEFENDER(2),
     DUEL(3);
@@ -12,7 +12,7 @@ public enum GameModeEnum { // permet de faire des choix uniques
         return code;
     }
 
-    GameModeEnum(int code) {
+    EnumModeDeJeux(int code) {
         this.code = code;
     }
 
@@ -22,8 +22,8 @@ public enum GameModeEnum { // permet de faire des choix uniques
      * @param saisie
      * @return
      */
-    public static GameModeEnum getMode(int saisie) {
-        for (GameModeEnum g : GameModeEnum.values()) {
+    public static EnumModeDeJeux getMode(int saisie) {
+        for (EnumModeDeJeux g : EnumModeDeJeux.values()) {
             if (saisie == g.code) {
                 return g;
             }

@@ -1,41 +1,39 @@
 package fr.oc.projet.games;
 
-import fr.oc.projet.enums.GameModeEnum;
-import fr.oc.projet3.launcher.LoadProperties;
+import fr.oc.projet.enums.EnumModeDeJeux;
+import fr.oc.projet3.launcher.ChargementDesProprietes;
 import fr.oc.projet3.launcher.Main;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.util.Scanner;
 
-public class Game {
+public class Jeux {
     private String user;
-    private GameModeEnum modeDeJeu;
+    private EnumModeDeJeux modeDeJeu;
     private int resultat;
     private int nombreDessais;
     private String description;
 
-    public void setDevMod(boolean devMod) {
-        this.devMod = devMod;
-    }
 
+    /**
+     * devMod est la valeur de devOrProd du main.
+     */
     private boolean devMod;
     private int nombreDeChiffre;
     private int valeurSaisie;
-    private Scanner sc;
     private static final char OK = 'o';
     private static final char KO = 'x';
 
-    public Game() {
+    public Jeux() {
     }
 
-    private static final Logger logger = LogManager.getLogger(Game.class);
+    private static final Logger logger = LogManager.getLogger(Jeux.class);
 
     /**
      * Permet de lancer le jeu.
      */
-    public void play() {
-        logger.info("Game Launched");
+    public void jouer() {
+        logger.info("Jeux Lancé");
 
     }
 
@@ -43,7 +41,7 @@ public class Game {
      * Constructeur vide qui permet d'appeler MasterMind sans lui donner de param.
      */
 
-//    public Game() { //constructeur vide pour appeler sans rentrer toutes les infos
+//    public Jeux() { //constructeur vide pour appeler sans rentrer toutes les infos
 //        r = new Random();
 //        sc = new Scanner(System.in);
 //    }
@@ -59,19 +57,18 @@ public class Game {
      * @param description   description du mode de jeu.
      * @param devMod        entrer dans le mode dev (combinaison connue).
      */
-    public Game(String user, GameModeEnum modeDeJeu, int resultat, int nombreDessais, String description, boolean devMod, int nombreDeChiffre) {
+    public Jeux(String user, EnumModeDeJeux modeDeJeu, int resultat, int nombreDessais, String description, boolean devMod, int nombreDeChiffre) {
         this.description = description;
         this.modeDeJeu = modeDeJeu;
         this.nombreDessais = nombreDessais;
         this.user = user;
         this.resultat = resultat;
         this.devMod = devMod;
-        sc = new Scanner(System.in);
 
     }
     public void retrymod() {  //------------------------------------------------------------------A VERIFIER
         logger.info("Souhaitez vous refaire une partie ? Si oui Tapez 1, Si non Tapez 2");
-        int retry = sc.nextInt();
+        int retry = Main.sc.nextInt();
             switch (retry){
                 case 1 :
                    // relancer le jeu
@@ -82,6 +79,22 @@ public class Game {
                 default:
                     logger.info("Saisie invalide le jeu vas se terminer. Vous pouvez relancer le jeu à tout moment ! Au revoir !");
             }
+    }
+
+    /**
+     * Methode qui comme son nom l'indique permet de recuperer les saisie claviers en les mettant dans un tableau de int.
+     *
+     * @return saisieplayer
+     */
+    public int[] recursiveSaisieClavier() {
+        // mettre methode en recursive verif si bon nombre de chiffre sinon rappel saisieclavier -------
+        int[] saisieJoueur = new int[getNombreDeChiffre()]; // creation d'un tableau de taille nbcase
+
+        String nombreSaisi = Main.sc.nextLine();
+        for (int i = 0; i < getNombreDeChiffre(); i++) {
+            saisieJoueur[i] = Integer.parseInt(String.valueOf(nombreSaisi.charAt(i)));// transformer la saisie en tableau.
+        }
+        return saisieJoueur;
     }
     /**
      * Getter User
@@ -106,7 +119,7 @@ public class Game {
      *
      * @return
      */
-    public GameModeEnum getModeDeJeu() {
+    public EnumModeDeJeux getModeDeJeu() {
         return modeDeJeu;
     }
 
@@ -115,10 +128,13 @@ public class Game {
      *
      * @return mode de jeu
      */
-    public void setModeDeJeu(GameModeEnum modeDeJeu) {
+    public void setModeDeJeu(EnumModeDeJeux modeDeJeu) {
         this.modeDeJeu = modeDeJeu;
     }
 
+    public void setDevMod(boolean devMod) {
+        this.devMod = devMod;
+    }
     /**
      * Getter resultat bool
      *
@@ -183,25 +199,7 @@ public class Game {
         return devMod;
     }
 
-    /**
-     * Scanner Sc
-     *
-     * @return getteur de scanner
-     */
 
-    public Scanner getSc() {
-
-        return sc;
-    }
-
-    /**
-     * Scanner Sc
-     *
-     * @return setteur de scanner
-     */
-    public void setSc() {
-        this.sc = sc;
-    }
 
     /**
      * Valeur saisie par l'utilisateur
@@ -228,7 +226,7 @@ public class Game {
      */
     public int getNombreDeChiffre() {
 
-        this.nombreDeChiffre = Integer.parseInt(LoadProperties.NB_CASE_VALUE);
+        this.nombreDeChiffre = Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE);
         return nombreDeChiffre;
     }
 
@@ -238,7 +236,7 @@ public class Game {
      * @return setteur de nombreDeChiffre
      */
     public int setNombreDeChiffre(int nombreChiffre) {
-        this.nombreDeChiffre = Integer.parseInt(LoadProperties.NB_CASE_VALUE);
+        this.nombreDeChiffre = Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE);
         return nombreChiffre;
     }
 

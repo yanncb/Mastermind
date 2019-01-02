@@ -1,7 +1,7 @@
 package fr.oc.projet3.launcher;
 
-import fr.oc.projet.enums.GameModeEnum;
-import fr.oc.projet.games.Game;
+import fr.oc.projet.enums.EnumModeDeJeux;
+import fr.oc.projet.games.Jeux;
 import fr.oc.projet.games.mastermind.Mastermind;
 import fr.oc.projet.games.recherchePlusMoins.RecherchePlusMoins;
 import org.apache.logging.log4j.LogManager;
@@ -10,21 +10,19 @@ import org.apache.logging.log4j.Logger;
 import java.util.Scanner;
 
 public class Main {
-    private static final Scanner sc = new Scanner(System.in);
+    public static final Scanner sc = new Scanner(System.in);
     private static final Logger logger = LogManager.getLogger(Main.class);
-    static Game game = new Game();
-    public static String devOrProd;
 
     public static void main(String[] args) {
-
+        String devOrProd =null;
         if (args.length > 0) {
             switch (args[0]) {
-                case Constants.MOD_DEV:
-                    devOrProd = Constants.MOD_DEV;
+                case Constante.MODE_DEV:
+                    devOrProd = Constante.MODE_DEV;
                     logger.info("Mode Dev");
                     break;
-                case Constants.MOD_PROD:
-                    devOrProd = Constants.MOD_PROD;
+                case Constante.MODE_PROD:
+                    devOrProd = Constante.MODE_PROD;
                     logger.info("Mode PROD");
                     break;
                 default:
@@ -33,30 +31,37 @@ public class Main {
             }
         } else {
             logger.info("Pas de parametres, verification dans le fichier de proprietes.");
-            switch (LoadProperties.MOD_DEV_VALUE) {
-                case Constants.MOD_DEV:
-                    devOrProd = Constants.MOD_DEV;
-                    logger.info("mode DEV");
-                    break;
-                case Constants.MOD_PROD:
-                    devOrProd = Constants.MOD_PROD;
-                    logger.info("Mode PROD");
-                    break;
-                default:
-                    logger.info("Aucun mode detecté dans les properties.");
+            if(ChargementDesProprietes.MOD_DEV_VALUE!=null) {
+                switch (ChargementDesProprietes.MOD_DEV_VALUE) {
+                    case Constante.MODE_DEV:
+                        devOrProd = Constante.MODE_DEV;
+                        logger.info("mode DEV");
+                        break;
+                    case Constante.MODE_PROD:
+                        devOrProd = Constante.MODE_PROD;
+                        logger.info("Mode PROD");
+                        break;
+                    default:
+                        logger.info("Aucun mode detecté dans les proprietes.");
+                }
+            }else {
+                logger.error("Pas de parametres dans les proprietes.");
             }
-        }
+            }
         // executer le jeu ici :
         if (devOrProd != null) {
 
             Integer choice = selectGameType();
-            Game game = getGame(choice);
-            logger.info("Vous entrez dans le jeux {}", game.getClass().getSimpleName());
+            Jeux jeux = getGame(choice);
+            logger.info("Vous entrez dans le jeux {}", jeux.getClass().getSimpleName());
             Integer mode = selectGameMode();
-            logger.info("Vous avez choisi le mode {}", GameModeEnum.getMode(mode));
-            game.setModeDeJeu(GameModeEnum.getMode(mode));
-            game.setDevMod(Constants.MOD_DEV.equals(devOrProd));
-            game.play();
+            logger.info("Vous avez choisi le mode {}", EnumModeDeJeux.getMode(mode));
+            jeux.setModeDeJeu(EnumModeDeJeux.getMode(mode));
+            jeux.setDevMod(Constante.MODE_DEV.equals(devOrProd));
+            jeux.setNombreDessais(Integer.parseInt(ChargementDesProprietes.NB_RETRY_VALUE));
+            jeux.setNombreDeChiffre(Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE));
+            jeux.jouer();
+
         } else {
             logger.error("Le jeu ne se lancera pas aucun args et rien dans les properties.");
         }
@@ -69,11 +74,11 @@ public class Main {
      */
     private static Integer selectGameMode() { //méthode pour recuperer le mode de jeu avec If
         logger.info("Choisissez votre mode de jeux : ");
-        for (GameModeEnum gameModeEnum : GameModeEnum.values()) {  // GameModeEnum.values liste des enums de gamemode. La boucle for sert à parcourir les elements de ma liste enumere.
-            logger.info("Pour {} tapez {}", gameModeEnum.getCode(), gameModeEnum.name());
+        for (EnumModeDeJeux enumModeDeJeux : EnumModeDeJeux.values()) {  // EnumModeDeJeux.values liste des enums de gamemode. La boucle for sert à parcourir les elements de ma liste enumere.
+            logger.info("Pour {} tapez {}", enumModeDeJeux.name(), enumModeDeJeux.getCode());
         }
         int mode = sc.nextInt();
-        if (mode > GameModeEnum.values().length || mode < 0) { // le gamemodeenum.values permet de recuperer le tableau et le .lenght permet de comparer la longueur. ça permet egalement de pouvoir modifier les données par la suite (nombres de chiffres du mastermind).
+        if (mode > EnumModeDeJeux.values().length || mode < 0) { // le gamemodeenum.values permet de recuperer le tableau et le .lenght permet de comparer la longueur. ça permet egalement de pouvoir modifier les données par la suite (nombres de chiffres du mastermind).
             logger.info("Vous avez choisi une valeur hors interval");
             System.exit(-2);
         }
@@ -109,17 +114,17 @@ public class Main {
      * Permet de choisir le type de jeu
      *
      * @param choice Integer 1ou 2
-     * @return game
+     * @return jeux
      */
-    private static Game getGame(Integer choice) { // méthode pour choisir le type de jeu avec un Switch
-        Game game = null;
+    private static Jeux getGame(Integer choice) { // méthode pour choisir le type de jeu avec un Switch
+        Jeux jeux = null;
         switch (choice) {
             case 1: {
-                game = new Mastermind();
+                jeux = new Mastermind();
                 break;
             }
             case 2: {
-                game = new RecherchePlusMoins();
+                jeux = new RecherchePlusMoins();
                 break;
             }
             default: {
@@ -127,7 +132,7 @@ public class Main {
                 System.exit(-1);
             }
         }
-        return game;
+        return jeux;
     }
 
     /**

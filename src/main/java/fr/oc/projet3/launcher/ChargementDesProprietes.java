@@ -7,7 +7,7 @@ import java.util.Properties;
 /**
  *
  */
-public class LoadProperties {
+public class ChargementDesProprietes {
     /**
      * Nom de la valeur de la propriete dans le fichier properties
      */
@@ -22,7 +22,7 @@ public class LoadProperties {
 
 
     static {
-        try (InputStream input = LoadProperties.class.getClassLoader().getResourceAsStream("config.properties")) {
+        try (InputStream input = ChargementDesProprietes.class.getClassLoader().getResourceAsStream("config.properties")) {
             Properties prop = new Properties();
 
             prop.load(input);
