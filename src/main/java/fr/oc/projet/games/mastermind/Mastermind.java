@@ -1,8 +1,7 @@
 package fr.oc.projet.games.mastermind;
 
 import fr.oc.projet.enums.EnumModeDeJeux;
-import fr.oc.projet.games.Jeux;
-import fr.oc.projet3.launcher.ChargementDesProprietes;
+import fr.oc.projet.games.Jeu;
 import fr.oc.projet3.launcher.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,7 +10,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 
-public class Mastermind extends Jeux {
+public class Mastermind extends Jeu {
 
     private static final Logger logger = LogManager.getLogger(Mastermind.class);
 
@@ -70,15 +69,14 @@ public class Mastermind extends Jeux {
         int compteur = 0;
         int nbPresent;
         int nbBonnePlace;
-        // getNombreDessais();
-        // recupere tous les get de la classe JEUX pour remplacer les int nbEssais, nbCase etc...
+
         do {
             nbPresent = 0;
             nbBonnePlace = 0;
             logger.info("\nEssai n° {} /  {}   :", (compteur + 1), getNombreDessais());
             int[] saisieClavier = recursiveSaisieClavier();
             // verif longueur du tableau soit egal
-            if (saisieClavier.length == getNombreDeChiffre()) {
+           // if (saisieClavier.length == getNombreDeChiffre()) {
                 for (int i = 0; i < getNombreDeChiffre(); i++) {
                     int chiffreCourant = saisieClavier[i];
                     boolean estALaBonnePlace = false;
@@ -96,8 +94,8 @@ public class Mastermind extends Jeux {
                         nbBonnePlace++;
                     }
                 }
-            } else {
-            } // redonner le choix de refaire une saisie du clavier. creer une methode recursive pour rappeler en boucle la saisie clavier.
+       //     } else {
+         //   } // redonner le choix de refaire une saisie du clavier. creer une methode recursive pour rappeler en boucle la saisie clavier.
             compteur++;
             logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", saisieClavier, nbPresent, nbBonnePlace);
         } while (getNombreDeChiffre() != (nbBonnePlace) && getNombreDessais() != (compteur));
@@ -242,8 +240,6 @@ public class Mastermind extends Jeux {
                     if (!existeDansLeTableau) {
                         int[] nbZero = new int[getNombreDeChiffre()];
 
-
-//                        int[] nouveauRandom = Utilitaire.creationDuRandom(getDevMod());
                         nombrePourLaSolutionPc[i] = nbZero[i];
 
                     }

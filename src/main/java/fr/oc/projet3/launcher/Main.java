@@ -1,7 +1,7 @@
 package fr.oc.projet3.launcher;
 
 import fr.oc.projet.enums.EnumModeDeJeux;
-import fr.oc.projet.games.Jeux;
+import fr.oc.projet.games.Jeu;
 import fr.oc.projet.games.mastermind.Mastermind;
 import fr.oc.projet.games.recherchePlusMoins.RecherchePlusMoins;
 import org.apache.logging.log4j.LogManager;
@@ -48,19 +48,19 @@ public class Main {
                 logger.error("Pas de parametres dans les proprietes.");
             }
             }
-        // executer le jeu ici :
+
         if (devOrProd != null) {
 
             Integer choice = selectGameType();
-            Jeux jeux = getGame(choice);
-            logger.info("Vous entrez dans le jeux {}", jeux.getClass().getSimpleName());
+            Jeu jeu = getGame(choice);
+            logger.info("Vous entrez dans le jeu {}", jeu.getClass().getSimpleName());
             Integer mode = selectGameMode();
             logger.info("Vous avez choisi le mode {}", EnumModeDeJeux.getMode(mode));
-            jeux.setModeDeJeu(EnumModeDeJeux.getMode(mode));
-            jeux.setDevMod(Constante.MODE_DEV.equals(devOrProd));
-            jeux.setNombreDessais(Integer.parseInt(ChargementDesProprietes.NB_RETRY_VALUE));
-            jeux.setNombreDeChiffre(Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE));
-            jeux.jouer();
+            jeu.setModeDeJeu(EnumModeDeJeux.getMode(mode));
+            jeu.setDevMod(Constante.MODE_DEV.equals(devOrProd));
+            jeu.setNombreDessais(Integer.parseInt(ChargementDesProprietes.NB_RETRY_VALUE));
+            jeu.setNombreDeChiffre(Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE));
+            jeu.jouer();
 
         } else {
             logger.error("Le jeu ne se lancera pas aucun args et rien dans les properties.");
@@ -78,37 +78,12 @@ public class Main {
             logger.info("Pour {} tapez {}", enumModeDeJeux.name(), enumModeDeJeux.getCode());
         }
         int mode = sc.nextInt();
-        if (mode > EnumModeDeJeux.values().length || mode < 0) { // le gamemodeenum.values permet de recuperer le tableau et le .lenght permet de comparer la longueur. ça permet egalement de pouvoir modifier les données par la suite (nombres de chiffres du mastermind).
+        if (mode > EnumModeDeJeux.values().length || mode < 0) { // le EnumModeDeJeux.values permet de recuperer le tableau et le .lenght permet de comparer la longueur. ça permet egalement de pouvoir modifier les données par la suite (nombres de chiffres du mastermind).
             logger.info("Vous avez choisi une valeur hors interval");
             System.exit(-2);
         }
         return mode;
     }
-//    private static Mastermind launchMode(Integer mode) {
-//        Mastermind mastermind = null;
-//        switch (mode) {
-//            case 1:{
-//                mastermind = new Mastermind();
-//                break;
-//            }
-//            case 2:{
-//                mastermind = new MasterMindDefenseur();
-//                MasterMindDefenseur masterMindDefenseur = new MasterMindDefenseur();
-//                break;
-//            }
-//            case 3 :{
-//                mastermind = new MastermindDuel();
-//                MastermindDuel mastermindDuel = new MastermindDuel();
-//                break;
-//            }
-//            default: {
-//                logger.info("Vous avez rentré un numéro qui ne correspond à aucun choix");
-//                System.exit(-1);
-//            }
-//
-//        }
-//        return mastermind;
-//    }
 
     /**
      * Permet de choisir le type de jeu
@@ -116,15 +91,15 @@ public class Main {
      * @param choice Integer 1ou 2
      * @return jeux
      */
-    private static Jeux getGame(Integer choice) { // méthode pour choisir le type de jeu avec un Switch
-        Jeux jeux = null;
+    private static Jeu getGame(Integer choice) {
+        Jeu jeu = null;
         switch (choice) {
             case 1: {
-                jeux = new Mastermind();
+                jeu = new Mastermind();
                 break;
             }
             case 2: {
-                jeux = new RecherchePlusMoins();
+                jeu = new RecherchePlusMoins();
                 break;
             }
             default: {
@@ -132,7 +107,7 @@ public class Main {
                 System.exit(-1);
             }
         }
-        return jeux;
+        return jeu;
     }
 
     /**

@@ -1,12 +1,12 @@
 package fr.oc.projet.games.recherchePlusMoins;
 
 import fr.oc.projet.enums.EnumModeDeJeux;
-import fr.oc.projet.games.Jeux;
+import fr.oc.projet.games.Jeu;
 import fr.oc.projet3.launcher.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class RecherchePlusMoins extends Jeux {
+public class RecherchePlusMoins extends Jeu {
 
     private static final Logger logger = LogManager.getLogger(RecherchePlusMoins.class);
 

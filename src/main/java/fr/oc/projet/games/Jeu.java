@@ -7,7 +7,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 
-public class Jeux {
+public class Jeu {
     private String user;
     private EnumModeDeJeux modeDeJeu;
     private int resultat;
@@ -24,16 +24,16 @@ public class Jeux {
     private static final char OK = 'o';
     private static final char KO = 'x';
 
-    public Jeux() {
+    public Jeu() {
     }
 
-    private static final Logger logger = LogManager.getLogger(Jeux.class);
+    private static final Logger logger = LogManager.getLogger(Jeu.class);
 
     /**
      * Permet de lancer le jeu.
      */
     public void jouer() {
-        logger.info("Jeux Lancé");
+        logger.info("Jeu Lancé");
 
     }
 
@@ -41,7 +41,7 @@ public class Jeux {
      * Constructeur vide qui permet d'appeler MasterMind sans lui donner de param.
      */
 
-//    public Jeux() { //constructeur vide pour appeler sans rentrer toutes les infos
+//    public Jeu() { //constructeur vide pour appeler sans rentrer toutes les infos
 //        r = new Random();
 //        sc = new Scanner(System.in);
 //    }
@@ -57,7 +57,7 @@ public class Jeux {
      * @param description   description du mode de jeu.
      * @param devMod        entrer dans le mode dev (combinaison connue).
      */
-    public Jeux(String user, EnumModeDeJeux modeDeJeu, int resultat, int nombreDessais, String description, boolean devMod, int nombreDeChiffre) {
+    public Jeu(String user, EnumModeDeJeux modeDeJeu, int resultat, int nombreDessais, String description, boolean devMod, int nombreDeChiffre) {
         this.description = description;
         this.modeDeJeu = modeDeJeu;
         this.nombreDessais = nombreDessais;
@@ -89,13 +89,13 @@ public class Jeux {
     public int[] recursiveSaisieClavier() {
         // mettre methode en recursive verif si bon nombre de chiffre sinon rappel saisieclavier -------
         int[] saisieJoueur = new int[getNombreDeChiffre()]; // creation d'un tableau de taille nbcase
-
         String nombreSaisi = Main.sc.nextLine();
         for (int i = 0; i < getNombreDeChiffre(); i++) {
             saisieJoueur[i] = Integer.parseInt(String.valueOf(nombreSaisi.charAt(i)));// transformer la saisie en tableau.
         }
         return saisieJoueur;
     }
+
     /**
      * Getter User
      *
@@ -159,7 +159,7 @@ public class Jeux {
      * @return nombreDessais
      */
     public int getNombreDessais() {
-        nombreDessais = 4;
+        this.nombreDessais = Integer.parseInt(ChargementDesProprietes.NB_RETRY_VALUE);
         return nombreDessais;
     }
 
