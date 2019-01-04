@@ -1,6 +1,7 @@
 package fr.oc.projet3.launcher;
 
 import fr.oc.projet.enums.EnumModeDeJeux;
+import fr.oc.projet.enums.TypeDeJeux;
 import fr.oc.projet.games.Jeu;
 import fr.oc.projet.games.mastermind.Mastermind;
 import fr.oc.projet.games.recherchePlusMoins.RecherchePlusMoins;
@@ -51,9 +52,9 @@ public class Main {
 
         if (devOrProd != null) {
 
-            Integer choice = selectGameType();
-            Jeu jeu = getGame(choice);
-            logger.info("Vous entrez dans le jeu {}", jeu.getClass().getSimpleName());
+            Integer choix = selectGameType();
+            Jeu jeu = getJeu(choix);
+            logger.info("Vous entrez dans le jeu {}", TypeDeJeux.getMode(choix));
             Integer mode = selectGameMode();
             logger.info("Vous avez choisi le mode {}", EnumModeDeJeux.getMode(mode));
             jeu.setModeDeJeu(EnumModeDeJeux.getMode(mode));
@@ -78,7 +79,7 @@ public class Main {
             logger.info("Pour {} tapez {}", enumModeDeJeux.name(), enumModeDeJeux.getCode());
         }
         int mode = sc.nextInt();
-        if (mode > EnumModeDeJeux.values().length || mode < 0) { // le EnumModeDeJeux.values permet de recuperer le tableau et le .lenght permet de comparer la longueur. ça permet egalement de pouvoir modifier les données par la suite (nombres de chiffres du mastermind).
+        if (mode > EnumModeDeJeux.values().length || mode < 0) {
             logger.info("Vous avez choisi une valeur hors interval");
             System.exit(-2);
         }
@@ -91,7 +92,7 @@ public class Main {
      * @param choice Integer 1ou 2
      * @return jeux
      */
-    private static Jeu getGame(Integer choice) {
+    private static Jeu getJeu(Integer choice) {
         Jeu jeu = null;
         switch (choice) {
             case 1: {
@@ -117,9 +118,9 @@ public class Main {
      */
     private static Integer selectGameType() {
         logger.info("Bienvenue, il est temps de choisir votre type de jeu !");
-        logger.info("Tapez 1 pour : pour lancer une version du mastermind avec des indications moins précises que le premier mode");
-        logger.info("Tapez 2 pour : rechercher une combinaison avec en retour des indications +/- pour trouver le résultat ");
-
+        for (TypeDeJeux typeDeJeux : TypeDeJeux.values()) {
+            logger.info("Tapez {} pour pour lancer {}", typeDeJeux.getType(),typeDeJeux.name());
+        }
         return sc.nextInt();
     }
 }

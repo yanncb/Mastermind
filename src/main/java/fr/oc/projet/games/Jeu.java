@@ -87,11 +87,21 @@ public class Jeu {
      * @return saisieplayer
      */
     public int[] recursiveSaisieClavier() {
-        // mettre methode en recursive verif si bon nombre de chiffre sinon rappel saisieclavier -------
+        // mettre methode en recursive verif si bon nombre de chiffre sinon rappel saisieclavier -------   A MODIFIER   ---------------------------
         int[] saisieJoueur = new int[getNombreDeChiffre()]; // creation d'un tableau de taille nbcase
         String nombreSaisi = Main.sc.nextLine();
-        for (int i = 0; i < getNombreDeChiffre(); i++) {
-            saisieJoueur[i] = Integer.parseInt(String.valueOf(nombreSaisi.charAt(i)));// transformer la saisie en tableau.
+        boolean valeur = false;
+        while (!valeur)
+        if (nombreSaisi.length()!=getNombreDeChiffre()) {
+            for (int i = 0; i < getNombreDeChiffre(); i++) {
+                saisieJoueur[i] = Integer.parseInt(String.valueOf(nombreSaisi.charAt(i)));// transformer la saisie en tableau.
+                valeur=true;
+
+            }
+        }else  {
+            logger.info("La longueur du code saisie ne correspond pas a la valeur saisie.");
+            // relancer la saisie clavier et retourner dans le if
+
         }
         return saisieJoueur;
     }

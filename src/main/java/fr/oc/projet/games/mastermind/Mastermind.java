@@ -75,6 +75,7 @@ public class Mastermind extends Jeu {
             nbBonnePlace = 0;
             logger.info("\nEssai n° {} /  {}   :", (compteur + 1), getNombreDessais());
             int[] saisieClavier = recursiveSaisieClavier();
+
             // verif longueur du tableau soit egal
            // if (saisieClavier.length == getNombreDeChiffre()) {
                 for (int i = 0; i < getNombreDeChiffre(); i++) {
