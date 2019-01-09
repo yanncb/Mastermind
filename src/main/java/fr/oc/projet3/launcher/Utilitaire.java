@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Utilitaire {
@@ -20,7 +21,6 @@ public class Utilitaire {
         int[] resultatDuRandom = new int[nbCaseValue];
         Random random = new Random();
 
-
         /**
          * Je genere mon code à découvrir dans le Mastermind avec random.
          */
@@ -32,6 +32,26 @@ public class Utilitaire {
             logger.info("Le code genere par l'ordinateur aleatoirement est : {}", Arrays.toString(resultatDuRandom));
         }
 
+        return resultatDuRandom;
+    }
+
+    public static int[] creationDuRandom(List<Integer> existsRandoms) {
+
+        int nbCaseValue = Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE);
+        int[] resultatDuRandom = new int[nbCaseValue];
+        Random random = new Random();
+        boolean randomExist = false;
+        do {
+            for (int i = 0; i < nbCaseValue; i++) {
+                resultatDuRandom[i] = random.nextInt(9);
+            }
+            Integer value = Integer.valueOf(resultatDuRandom.toString());
+            if(existsRandoms.contains(value)){
+                randomExist = true;
+            } else {
+                existsRandoms.add(value);
+            }
+        }while (randomExist);
         return resultatDuRandom;
     }
     public static int[] creationDuRandomSansModeDev() {

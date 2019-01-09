@@ -1,13 +1,17 @@
 package fr.oc.projet.games;
 
 import fr.oc.projet.enums.EnumModeDeJeux;
+import fr.oc.projet.games.mastermind.Mastermind;
 import fr.oc.projet3.launcher.ChargementDesProprietes;
 import fr.oc.projet3.launcher.Main;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Scanner;
 
 
 public class Jeu {
+    public static Scanner scan = new Scanner(System.in);
     private String user;
     private EnumModeDeJeux modeDeJeu;
     private int resultat;
@@ -86,24 +90,27 @@ public class Jeu {
      *
      * @return saisieplayer
      */
-    public int[] recursiveSaisieClavier() {
-        // mettre methode en recursive verif si bon nombre de chiffre sinon rappel saisieclavier -------   A MODIFIER   ---------------------------
-        int[] saisieJoueur = new int[getNombreDeChiffre()]; // creation d'un tableau de taille nbcase
-        String nombreSaisi = Main.sc.nextLine();
-        boolean valeur = false;
-        while (!valeur)
-        if (nombreSaisi.length()!=getNombreDeChiffre()) {
-            for (int i = 0; i < getNombreDeChiffre(); i++) {
-                saisieJoueur[i] = Integer.parseInt(String.valueOf(nombreSaisi.charAt(i)));// transformer la saisie en tableau.
-                valeur=true;
+    public int[] SaisieClavier() {
+       boolean saisieOk = false;
+       int length = getNombreDeChiffre();
+       int[] saisieJoueur = new int[length];
+       do {
+           String nombreSaisi = scan.nextLine();
+           if (nombreSaisi.length()!=length) {
+               logger.info("La longueur du code saisie ne correspond pas a la valeur attendue.");
+               logger.info("Reessayez une saisie sur {}.", length);
+               saisieOk = false;
+           } else {
+             //   rajouter saisie joueur dans un tableau pour le mettre ensuite dans la saisie player.
+               for (int i = 0; i < length; i++) {
+                   saisieJoueur[i] = Integer.parseInt(String.valueOf(nombreSaisi.charAt(i)));// transformer la saisie en tableau.
+               }
 
-            }
-        }else  {
-            logger.info("La longueur du code saisie ne correspond pas a la valeur saisie.");
-            // relancer la saisie clavier et retourner dans le if
+               saisieOk = true;
+           }
+       }while (!saisieOk);
 
-        }
-        return saisieJoueur;
+       return saisieJoueur;
     }
 
     /**
