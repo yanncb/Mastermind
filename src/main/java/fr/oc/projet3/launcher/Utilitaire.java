@@ -35,6 +35,11 @@ public class Utilitaire {
         return resultatDuRandom;
     }
 
+    /**
+     * creation d'un tableau contenant des numeros aleatoire de taille (NB_CASE_VALUE)
+     * @param existsRandoms Si un code generé aleatoirement existe deja il en sera regeneré un nouveau, et le nouveau sera stocké dans la liste.
+     * @return un random de taille (NB_CASE_VALUE)
+     */
     public static int[] creationDuRandom(List<Integer> existsRandoms) {
 
         int nbCaseValue = Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE);
@@ -52,20 +57,6 @@ public class Utilitaire {
                 existsRandoms.add(value);
             }
         }while (randomExist);
-        return resultatDuRandom;
-    }
-    public static int[] creationDuRandomSansModeDev() {
-
-        int nbCaseValue = Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE);
-        int[] resultatDuRandom = new int[nbCaseValue];
-        Random random = new Random();
-
-        /**
-         * Je genere mon code à découvrir dans le Mastermind avec random.
-         */
-        for (int i = 0; i < nbCaseValue; i++) {
-            resultatDuRandom[i] = random.nextInt(9);
-        }
         return resultatDuRandom;
     }
 

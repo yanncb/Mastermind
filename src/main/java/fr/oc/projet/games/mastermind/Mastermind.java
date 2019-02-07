@@ -22,19 +22,6 @@ public class Mastermind extends Jeu {
     }
 
     /**
-     * Constructeur qui permet de construire le MasterMind
-     *
-     * @param user          nom d'utilisateur
-     * @param modeDeJeu     1/2/3
-     * @param resultat      boolean gagné ou perdu
-     * @param nombredessais pour limiter le nombres d'essai il faut les compter
-     * @param description   description du mode de jeu.
-     */
-    public Mastermind(String user, EnumModeDeJeux modeDeJeu, int resultat, int nombredessais, String description, boolean devmod, int nombreChiffre) {
-        super(user, modeDeJeu, resultat, nombredessais, description, devmod, nombreChiffre);
-    }
-
-    /**
      * Permet de lancer le jeu et d'en selectionner un mode!.
      */
     public void jouer() {
@@ -71,14 +58,14 @@ public class Mastermind extends Jeu {
         boolean trouve = false;
         int nbEssais = getNombreDessais();
         do {
-
+        // rajouter boucle for plutot que do while.
             logger.info("\nEssai n° {} /  {}   :", (compteur + 1), nbEssais);
             int[] saisieClavier = SaisieClavier();
 
             trouve = compareSaisieEtCodeSecret(random, saisieClavier, reponse);
             logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", saisieClavier, reponse[0], reponse[1]);
             compteur++;
-        } while (!trouve && compteur != nbEssais);
+        } while (!trouve && compteur <= nbEssais );
        if (trouve) {
            logger.info("Bravo !!! Tu gagne en {} essais ", compteur);
        }
@@ -93,24 +80,23 @@ public class Mastermind extends Jeu {
      * Methode qui permet de lancer le jeu en mode Mastermind Challenger
      */
     private void jouerMastermindDuel() {
-        // logger.info("Vous êtes en mode : Mastermind vous devez tentez de deviner un code que l'ordinateur va generer !");
-        // Combinaison creer par l'ordinateur pour trouver mon code.
-        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", getNombreDeChiffre());
-        int[] resultatATrouverParOrdi = SaisieClavier();
-        logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", resultatATrouverParOrdi);
-        int[] codeGenereParLordi = Utilitaire.creationDuRandom(getDevMod());
+        boolean trouve = false;
+        int lenght = getNombreDeChiffre();
+        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", lenght);
+        int[] CodeSecret = SaisieClavier();
+        logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", CodeSecret);
+        int[] codeGenereParLordi = Utilitaire.creationDuRandom(getDevMod()); // recuperation du random dans la methode creationduRandom dans utilitaire, et le met dans un tableau codeGenereParLordi
         int compteur = 0;
-        int[] reponse = new int[getNombreDeChiffre()];
-        int[] bonChiffreAenleverDuRamdom = new int[getNombreDeChiffre()];
+        int[] reponse = new int[lenght];
+        int[] bonChiffreAenleverDuRamdom = new int[lenght];
+
 
         do {
 
-//            while (!bonChiffreAenleverDuRamdom.equals(resultatATrouverParOrdi)) {
             logger.info("\nEssai n° {} /  {}   :", (compteur + 1), getNombreDessais());
-            compareSaisieEtCodeSecret(codeGenereParLordi, resultatATrouverParOrdi, reponse);
-//            }
+            compareSaisieEtCodeSecret(CodeSecret, codeGenereParLordi, reponse);
+            logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", CodeSecret, reponse[0], reponse[1]);
             compteur++;
-            logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", bonChiffreAenleverDuRamdom, reponse[0], reponse[1]);
         } while (getNombreDeChiffre() != (reponse[1]) && getNombreDessais() != (compteur));
         if (compteur >= getNombreDessais()) {
             logger.info("L'ordi a perdu !!! en {} essais,  Tu as donc Gagné !! ", compteur);
@@ -129,7 +115,6 @@ public class Mastermind extends Jeu {
         int[] nombrePourLaSolutionPc = new int[getNombreDeChiffre()];
         logger.info("(Proposition faite par l'ordinateur : {}", random);
         int[] chiffreATrouver = SaisieClavier();  //1 saisie un code  longueur defini par properties.
-        int[] recherche = new int[getNombreDeChiffre()];
         int compteur = 0;
         int nbPresent = 0;
         int nbBonnePlace = 0;

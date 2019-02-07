@@ -43,7 +43,7 @@ public class Main {
                         logger.info("Mode PROD");
                         break;
                     default:
-                        logger.info("Aucun mode detecté dans les proprietes.");
+                        logger.error("Aucun mode detecté dans les proprietes.");
                 }
             }else {
                 logger.error("Pas de parametres dans les proprietes.");
@@ -66,24 +66,6 @@ public class Main {
         } else {
             logger.error("Le jeu ne se lancera pas aucun args et rien dans les properties.");
         }
-    }
-
-    /**
-     * Choisir le mode de jeu
-     *
-     * @return le mode selectionné
-     */
-    private static Integer selectGameMode() { //méthode pour recuperer le mode de jeu avec If
-        logger.info("Choisissez votre mode de jeux : ");
-        for (EnumModeDeJeux enumModeDeJeux : EnumModeDeJeux.values()) {  // EnumModeDeJeux.values liste des enums de gamemode. La boucle for sert à parcourir les elements de ma liste enumere.
-            logger.info("Pour {} tapez {}", enumModeDeJeux.name(), enumModeDeJeux.getCode());
-        }
-        int mode = sc.nextInt();
-        if (mode > EnumModeDeJeux.values().length || mode < 0) {
-            logger.info("Vous avez choisi une valeur hors interval");
-            System.exit(-2);
-        }
-        return mode;
     }
 
     /**
@@ -110,6 +92,26 @@ public class Main {
         }
         return jeu;
     }
+
+    /**
+     * Choisir le mode de jeu
+     *
+     * @return le mode selectionné
+     */
+    private static Integer selectGameMode() { //méthode pour recuperer le mode de jeu avec If
+        logger.info("Choisissez votre mode de jeux : ");
+        for (EnumModeDeJeux enumModeDeJeux : EnumModeDeJeux.values()) {  // EnumModeDeJeux.values liste des enums de gamemode. La boucle for sert à parcourir les elements de ma liste enumere.
+            logger.info("Pour {} tapez {}", enumModeDeJeux.name(), enumModeDeJeux.getCode());
+        }
+        int mode = sc.nextInt();
+        if (mode > EnumModeDeJeux.values().length || mode < 0) {
+            logger.info("Vous avez choisi une valeur hors interval");
+            System.exit(-2);
+        }
+        return mode;
+    }
+
+
 
     /**
      * méthode pour choisir le type de jeu.

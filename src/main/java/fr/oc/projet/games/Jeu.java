@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Scanner;
 
 
-public class Jeu {
+public abstract class Jeu {
     public static Scanner scan = new Scanner(System.in);
     private String user;
     private EnumModeDeJeux modeDeJeu;
@@ -45,31 +45,6 @@ public class Jeu {
      * Constructeur vide qui permet d'appeler MasterMind sans lui donner de param.
      */
 
-//    public Jeu() { //constructeur vide pour appeler sans rentrer toutes les infos
-//        r = new Random();
-//        sc = new Scanner(System.in);
-//    }
-
-
-    /**
-     * Constructeur qui permet de construire le jeu hérité de game
-     *
-     * @param user          nom d'utilisateur
-     * @param modeDeJeu     1/2/3
-     * @param resultat      boolean gagné ou perdu
-     * @param nombreDessais pour limiter le nombres d'essai il faut les compter
-     * @param description   description du mode de jeu.
-     * @param devMod        entrer dans le mode dev (combinaison connue).
-     */
-    public Jeu(String user, EnumModeDeJeux modeDeJeu, int resultat, int nombreDessais, String description, boolean devMod, int nombreDeChiffre) {
-        this.description = description;
-        this.modeDeJeu = modeDeJeu;
-        this.nombreDessais = nombreDessais;
-        this.user = user;
-        this.resultat = resultat;
-        this.devMod = devMod;
-
-    }
     public void retrymod() {  //------------------------------------------------------------------A VERIFIER
         logger.info("Souhaitez vous refaire une partie ? Si oui Tapez 1, Si non Tapez 2");
         int retry = Main.sc.nextInt();

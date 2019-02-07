@@ -1,12 +1,15 @@
 package fr.oc.projet.enums;
 
-public enum EnumModeDeJeux { // permet de faire des choix uniques
+/**
+ * Creation de l'enum pour selectionner son mode de jeu.
+ */
+public enum EnumModeDeJeux {
     CHALLENGER(1),
     DEFENDER(2),
     DUEL(3);
 
 
-    private int code; // code est la valeur entre parenthese
+    private int code;
 
     public int getCode() {
         return code;
