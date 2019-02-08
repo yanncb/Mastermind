@@ -32,13 +32,90 @@ public class RecherchePlusMoins extends Jeu {
 
 
     }
-
     /**
-     * Permet de lancer le mode de jeu.
+     * Permet de lancer le jeu et d'en selectionner un mode!.
      */
     public void jouer() {
-        logger.info(" Recherche Plus Moins !");
+        logger.info("Vous avez  : {} d'essais et {} cases à trouver", getNombreDessais(), getNombreDeChiffre());
+        // switch case pour les modes simple, Defenseur et duel.
+        switch (getModeDeJeu()) {
+            case CHALLENGER: {
+                jouerRecherchePlusMoinsChallenger();
+                break;
+            }
+            case DEFENDER: {
+                jouerRecherchePlusMoinsDefenseur();
+                break;
+            }
+            case DUEL: {
+                jouerRecherchePlusMoinsDuel();
+                break;
+            }
+            default: {
+                logger.info("Vous avez rentré un numéro qui ne correspond à aucun choix");
+                System.exit(-1);
+            }
+        }
     }
 
+    private void jouerRecherchePlusMoinsChallenger(){
 
+        logger.info("Vous êtes en mode : Challenger vous devez tentez de deviner un code que l'ordinateur va generer !");
+        int[] random = Utilitaire.creationDuRandom(getDevMod());
+        int compteur = 0;
+        int[] reponse = new int[2];
+        boolean trouve = false;
+        int nbEssais = getNombreDessais();
+        int lenght = getNombreDeChiffre();
+        char[] tabPlusOuMoins = new char[lenght];
+        int tabSansVirgule = 0;
+        do {
+
+            logger.info("\nEssai n° {} /  {}   :", (compteur + 1), nbEssais);
+            int[] saisieClavier = SaisieClavier();
+            trouve = ComparerCodeSecretAvecPlusOuMoins(saisieClavier, random,tabPlusOuMoins );
+
+            logger.info("Proposition : {} -> Réponse : {}.", saisieClavier, tabPlusOuMoins);
+            compteur++;
+
+        } while (!trouve && compteur <= nbEssais);
+        if (trouve) {
+            logger.info("Bravo !!! Tu gagne en {} essais ", compteur);
+        }
+        if (!trouve && compteur == nbEssais) {
+            logger.info("Tu as PERDU !!! tu as atteint tes {} essais ", compteur);
+        }
+
+    }
+
+    private void jouerRecherchePlusMoinsDefenseur(){
+
+    }
+
+    private void jouerRecherchePlusMoinsDuel(){
+
+    }
+
+    public boolean ComparerCodeSecretAvecPlusOuMoins (int[] saisieClavier, int[] codeSecret,char[] tabPlusMoins) {
+        int compteur = 0;
+        for (int i = 0; i < saisieClavier.length; i++) {
+
+            if (saisieClavier[i] < codeSecret[i]) {
+                tabPlusMoins[i] = '+';
+            } else if (saisieClavier[i] > codeSecret[i]) {
+                tabPlusMoins[i] = '-';
+            } else {
+                tabPlusMoins[i] = '=';
+                compteur++;
+            }
+
+        }
+
+        if (compteur==saisieClavier.length){
+            return true;
+        }else
+
+
+        return false;
+    }
 }
