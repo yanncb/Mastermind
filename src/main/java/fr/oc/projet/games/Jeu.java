@@ -1,8 +1,6 @@
 package fr.oc.projet.games;
 
 import fr.oc.projet.enums.EnumModeDeJeux;
-import fr.oc.projet.games.mastermind.Mastermind;
-import fr.oc.projet3.launcher.ChargementDesProprietes;
 import fr.oc.projet3.launcher.Main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,8 +35,6 @@ public abstract class Jeu {
      * Permet de lancer le jeu.
      */
     public void jouer() {
-        logger.info("Jeu Lancé");
-
     }
 
     /**
@@ -151,7 +147,6 @@ public abstract class Jeu {
      * @return nombreDessais
      */
     public int getNombreDessais() {
-        this.nombreDessais = Integer.parseInt(ChargementDesProprietes.NB_RETRY_VALUE);
         return nombreDessais;
     }
 
@@ -217,8 +212,6 @@ public abstract class Jeu {
      * @return getteur de nombreDeChiffre
      */
     public int getNombreDeChiffre() {
-
-        this.nombreDeChiffre = Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE);
         return nombreDeChiffre;
     }
 
@@ -227,9 +220,8 @@ public abstract class Jeu {
      *
      * @return setteur de nombreDeChiffre
      */
-    public int setNombreDeChiffre(int nombreChiffre) {
-        this.nombreDeChiffre = Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE);
-        return nombreChiffre;
+    public void setNombreDeChiffre(int nombreChiffre) {
+        this.nombreDeChiffre = nombreChiffre;
     }
 
 

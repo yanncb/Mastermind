@@ -4,33 +4,70 @@ package fr.oc.projet.enums;
  * Creation de l'enum pour selectionner son mode de jeu.
  */
 public enum EnumModeDeJeux {
-    CHALLENGER(1),
-    DEFENDER(2),
-    DUEL(3);
+    CHALLENGER(1, "Challenger"),
+    DEFENDER(2, "Defender"),
+    DUEL(3, "Duel");
 
 
-    private int code;
+    private int numero;
+    private String nom;
 
-    public int getCode() {
-        return code;
+    public int getNumero() {
+        return numero;
     }
 
-    EnumModeDeJeux(int code) {
-        this.code = code;
+    public String getNom() {
+
+        return nom;
+    }
+
+    EnumModeDeJeux(int code, String nom) {
+        this.numero = code;
+        this.nom = nom;
     }
 
     /**
-     * Creation de l'enum en fonction de la saisie
+     * Retourne l'enum en fonction du numero
      *
-     * @param saisie
+     * @param code
      * @return
      */
-    public static EnumModeDeJeux getMode(int saisie) {
-        for (EnumModeDeJeux g : EnumModeDeJeux.values()) {
-            if (saisie == g.code) {
+    public static EnumModeDeJeux getMode(int code) {
+        for (EnumModeDeJeux modeDeJeux : EnumModeDeJeux.values()) {
+            if (code == modeDeJeux.numero) {
+                return modeDeJeux;
+            }
+        }
+       return null;
+    }
+
+    public static TypeDeJeux getNom (int saisie) {
+        for (TypeDeJeux g : TypeDeJeux.values()) {
+            if (saisie == g.getCode()) {
                 return g;
             }
         }
         return null;
     }
+
+    /**
+     * Retourne l'enum en fonction du numero
+     *
+     * @param code
+     * @return
+     */
+    public static EnumModeDeJeux getMode2(int code) {
+        EnumModeDeJeux[] tableauDesModesDeJeux = EnumModeDeJeux.values();
+        for (int i = 0; i < tableauDesModesDeJeux.length; i++) {
+            EnumModeDeJeux modeDeJeu = tableauDesModesDeJeux[i];
+            if (code == modeDeJeu.numero) {
+                return modeDeJeu;
+            }
+        }
+        return null;
+    }
+
+
+
+
 }

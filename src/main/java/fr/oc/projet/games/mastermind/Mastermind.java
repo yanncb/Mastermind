@@ -27,16 +27,16 @@ public class Mastermind extends Jeu {
     public void jouer() {
         logger.info("Vous avez  : {} d'essais et {} cases à trouver", getNombreDessais(), getNombreDeChiffre());
         // switch case pour les modes simple, Defenseur et duel.
-        switch (getModeDeJeu().getCode()) {
-            case 1: {
+        switch (getModeDeJeu()) {
+            case CHALLENGER: {
                 jouerMastermindChallenger();
                 break;
             }
-            case 2: {
+            case DEFENDER: {
                 jouerMastermindDefenseur();
                 break;
             }
-            case 3: {
+            case DUEL: {
                 jouerMastermindDuel();
                 break;
             }
@@ -58,18 +58,18 @@ public class Mastermind extends Jeu {
         boolean trouve = false;
         int nbEssais = getNombreDessais();
         do {
-        // rajouter boucle for plutot que do while.
+            // rajouter boucle for plutot que do while.
             logger.info("\nEssai n° {} /  {}   :", (compteur + 1), nbEssais);
             int[] saisieClavier = SaisieClavier();
 
             trouve = compareSaisieEtCodeSecret(random, saisieClavier, reponse);
             logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", saisieClavier, reponse[0], reponse[1]);
             compteur++;
-        } while (!trouve && compteur <= nbEssais );
-       if (trouve) {
-           logger.info("Bravo !!! Tu gagne en {} essais ", compteur);
-       }
-       if (!trouve && compteur==nbEssais){
+        } while (!trouve && compteur <= nbEssais);
+        if (trouve) {
+            logger.info("Bravo !!! Tu gagne en {} essais ", compteur);
+        }
+        if (!trouve && compteur == nbEssais) {
             logger.info("Tu as PERDU !!! tu as atteint tes {} essais ", compteur);
         }
 
@@ -79,31 +79,61 @@ public class Mastermind extends Jeu {
     /**
      * Methode qui permet de lancer le jeu en mode Mastermind Challenger
      */
-    private void jouerMastermindDuel() {
-        boolean trouve = false;
+    private void jouerMastermindDuel() {  // 90%
+
         int lenght = getNombreDeChiffre();
-        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", lenght);
-        int[] CodeSecret = SaisieClavier();
-        logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", CodeSecret);
+        int nbEssais = getNombreDessais();
         int[] codeGenereParLordi = Utilitaire.creationDuRandom(getDevMod()); // recuperation du random dans la methode creationduRandom dans utilitaire, et le met dans un tableau codeGenereParLordi
         int compteur = 0;
+        int compteurOrdi = 0;
         int[] reponse = new int[lenght];
         int[] bonChiffreAenleverDuRamdom = new int[lenght];
-
+        boolean trouve = false;
+        boolean premierJouerEstUtilisateur = true;
+        String vainqueur = null;
+        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", lenght);
+        int[] codeSecretSaisieParUtilisateur = SaisieClavier();
+        logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
+        int[] codeTapeParUtilisateur;
 
         do {
 
-            logger.info("\nEssai n° {} /  {}   :", (compteur + 1), getNombreDessais());
-            compareSaisieEtCodeSecret(CodeSecret, codeGenereParLordi, reponse);
-            logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", CodeSecret, reponse[0], reponse[1]);
-            compteur++;
-        } while (getNombreDeChiffre() != (reponse[1]) && getNombreDessais() != (compteur));
-        if (compteur >= getNombreDessais()) {
-            logger.info("L'ordi a perdu !!! en {} essais,  Tu as donc Gagné !! ", compteur);
-        } else {
-            logger.info("L'ordi Gagne en {} essais, et toi tu perds !!! ", compteur);
-        }
+            if (premierJouerEstUtilisateur) {
+                logger.info("\nEssai n° {} /  {}   :", (compteur + 1), getNombreDessais());
+                logger.info("Combinaison secrete de IA {}", codeGenereParLordi);
+                logger.info("Saisissez votre combinaison");
+                codeTapeParUtilisateur = SaisieClavier();
 
+                trouve = compareSaisieEtCodeSecret(codeGenereParLordi, codeTapeParUtilisateur, reponse);
+                logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", codeSecretSaisieParUtilisateur, reponse[0], reponse[1]);
+                compteur++;
+                if (trouve) {
+                    vainqueur = "Le joueur";
+
+                }
+                premierJouerEstUtilisateur = false;
+            } else {
+                logger.info("\nEssai n° {} /  {}   :", (compteurOrdi + 1), getNombreDessais());
+                logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
+                int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
+                trouve = compareSaisieEtCodeSecret(codeSecretSaisieParUtilisateur, propositionDeLordinateur, reponse);
+                logger.info("Proposition IA : {} -> Reponse : {} present, {} bien places.", propositionDeLordinateur, reponse[0], reponse[1]);
+                compteurOrdi++;
+                if (trouve) {
+                    vainqueur = "IA";
+                }
+                premierJouerEstUtilisateur = true;
+            }
+
+
+        } while (!trouve && nbEssais != compteur);
+
+        if (compteur == nbEssais && !trouve) {
+            logger.info("L'IA à perdu. Essai {} atteint.", compteur);
+        }
+        if (trouve) {
+            logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteur);
+        }
     }
 
     /**
@@ -207,7 +237,7 @@ public class Mastermind extends Jeu {
             if (existDansLeTableau && !estALaBonnePlace) {
                 nbPresent++;
             }
-        }  // faire le nouveau random ici en fonction du nombre de chiffre a la bonne place- present.
+        }
         reponse[0] = nbPresent;
         reponse[1] = nbBonnePlace;
         return (nbBonnePlace == compteur);

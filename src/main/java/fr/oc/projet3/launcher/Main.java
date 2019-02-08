@@ -54,10 +54,14 @@ public class Main {
 
             Integer choix = selectGameType();
             Jeu jeu = getJeu(choix);
-            logger.info("Vous entrez dans le jeu {}", TypeDeJeux.getMode(choix));
-            Integer mode = selectGameMode();
-            logger.info("Vous avez choisi le mode {}", EnumModeDeJeux.getMode(mode));
-            jeu.setModeDeJeu(EnumModeDeJeux.getMode(mode));
+            logger.info("Vous entrez dans le jeu {}", TypeDeJeux.getMode(choix).getNom());
+
+            // Selection du mode de jeu
+            EnumModeDeJeux modeDeJeux = EnumModeDeJeux.getMode(selectGameMode());
+            logger.info("Vous avez choisi le mode {}", modeDeJeux.getNom());
+            jeu.setModeDeJeu(modeDeJeux);
+
+
             jeu.setDevMod(Constante.MODE_DEV.equals(devOrProd));
             jeu.setNombreDessais(Integer.parseInt(ChargementDesProprietes.NB_RETRY_VALUE));
             jeu.setNombreDeChiffre(Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE));
@@ -71,12 +75,12 @@ public class Main {
     /**
      * Permet de choisir le type de jeu
      *
-     * @param choice Integer 1ou 2
+     * @param choix Integer 1ou 2
      * @return jeux
      */
-    private static Jeu getJeu(Integer choice) {
+    private static Jeu getJeu(Integer choix) {
         Jeu jeu = null;
-        switch (choice) {
+        switch (choix) {
             case 1: {
                 jeu = new Mastermind();
                 break;
@@ -98,15 +102,15 @@ public class Main {
      *
      * @return le mode selectionné
      */
-    private static Integer selectGameMode() { //méthode pour recuperer le mode de jeu avec If
+    private static Integer selectGameMode() {
         logger.info("Choisissez votre mode de jeux : ");
-        for (EnumModeDeJeux enumModeDeJeux : EnumModeDeJeux.values()) {  // EnumModeDeJeux.values liste des enums de gamemode. La boucle for sert à parcourir les elements de ma liste enumere.
-            logger.info("Pour {} tapez {}", enumModeDeJeux.name(), enumModeDeJeux.getCode());
+        for (EnumModeDeJeux modeDeJeux : EnumModeDeJeux.values()) {  // EnumModeDeJeux.values liste des enums de gamemode. La boucle for sert à parcourir les elements de ma liste enumere.
+            logger.info("Pour {} tapez {}", modeDeJeux.getNom(), modeDeJeux.getNumero());
         }
         int mode = sc.nextInt();
         if (mode > EnumModeDeJeux.values().length || mode < 0) {
             logger.info("Vous avez choisi une valeur hors interval");
-            System.exit(-2);
+            selectGameMode();
         }
         return mode;
     }
@@ -121,7 +125,7 @@ public class Main {
     private static Integer selectGameType() {
         logger.info("Bienvenue, il est temps de choisir votre type de jeu !");
         for (TypeDeJeux typeDeJeux : TypeDeJeux.values()) {
-            logger.info("Tapez {} pour pour lancer {}", typeDeJeux.getType(),typeDeJeux.name());
+            logger.info("Tapez {} pour pour lancer {}", typeDeJeux.getCode(),typeDeJeux.getNom());
         }
         return sc.nextInt();
     }
