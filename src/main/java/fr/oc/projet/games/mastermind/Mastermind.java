@@ -2,6 +2,7 @@ package fr.oc.projet.games.mastermind;
 
 import fr.oc.projet.enums.EnumModeDeJeux;
 import fr.oc.projet.games.Jeu;
+import fr.oc.projet3.launcher.Constante;
 import fr.oc.projet3.launcher.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,6 +82,7 @@ public class Mastermind extends Jeu {
      */
     private void jouerMastermindDuel() {  // 90%
 
+
         int lenght = getNombreDeChiffre();
         int nbEssais = getNombreDessais();
         int[] codeGenereParLordi = Utilitaire.creationDuRandom(getDevMod()); // recuperation du random dans la methode creationduRandom dans utilitaire, et le met dans un tableau codeGenereParLordi
@@ -100,12 +102,12 @@ public class Mastermind extends Jeu {
 
             if (premierJouerEstUtilisateur) {
                 logger.info("\nEssai n° {} /  {}   :", (compteur + 1), getNombreDessais());
-                logger.info("Combinaison secrete de IA {}", codeGenereParLordi);
+                logger.info("Combinaison secrete de {} {}", Constante.IA, codeGenereParLordi);
                 logger.info("Saisissez votre combinaison");
                 codeTapeParUtilisateur = SaisieClavier();
 
                 trouve = compareSaisieEtCodeSecret(codeGenereParLordi, codeTapeParUtilisateur, reponse);
-                logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", codeSecretSaisieParUtilisateur, reponse[0], reponse[1]);
+                logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", codeTapeParUtilisateur, reponse[0], reponse[1]);
                 compteur++;
                 if (trouve) {
                     vainqueur = "Le joueur";
@@ -113,14 +115,14 @@ public class Mastermind extends Jeu {
                 }
                 premierJouerEstUtilisateur = false;
             } else {
-                logger.info("\nEssai n° {} /  {}   :", (compteurOrdi + 1), getNombreDessais());
+                logger.info("\nEssai n° {} /  {} de l'{} :", Constante.IA, (compteurOrdi + 1), getNombreDessais());
                 logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
                 int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
                 trouve = compareSaisieEtCodeSecret(codeSecretSaisieParUtilisateur, propositionDeLordinateur, reponse);
-                logger.info("Proposition IA : {} -> Reponse : {} present, {} bien places.", propositionDeLordinateur, reponse[0], reponse[1]);
+                logger.info("Proposition {} : {} -> Reponse : {} present, {} bien places.",Constante.IA, propositionDeLordinateur, reponse[0], reponse[1]);
                 compteurOrdi++;
                 if (trouve) {
-                    vainqueur = "IA";
+                    vainqueur = Constante.IA;
                 }
                 premierJouerEstUtilisateur = true;
             }
@@ -129,7 +131,7 @@ public class Mastermind extends Jeu {
         } while (!trouve && nbEssais != compteur);
 
         if (compteur == nbEssais && !trouve) {
-            logger.info("L'IA à perdu. Essai {} atteint.", compteur);
+            logger.info("L'{} à perdu. Essai {} atteint.",Constante.IA, compteur);
         }
         if (trouve) {
             logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteur);
