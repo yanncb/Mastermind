@@ -1,6 +1,5 @@
 package fr.oc.projet.games.mastermind;
 
-import fr.oc.projet.enums.EnumModeDeJeux;
 import fr.oc.projet.games.Jeu;
 import fr.oc.projet3.launcher.Constante;
 import fr.oc.projet3.launcher.Utilitaire;
@@ -8,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
-import java.util.Random;
 
 
 public class Mastermind extends Jeu {
@@ -76,11 +74,45 @@ public class Mastermind extends Jeu {
 
     }
 
+    /**
+     * Methode qui permet de lancer le jeu en mode Mastermind Defenseur
+     */
+    private void jouerMastermindDefenseur() {
+
+        int lenght = getNombreDeChiffre();
+        int nbEssais = getNombreDessais();
+        int compteurOrdi = 0;
+        int[] reponse = new int[lenght];
+        boolean trouve = false;
+        String vainqueur = null;
+        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", lenght);
+        int[] codeSecretSaisieParUtilisateur = SaisieClavier();
+        logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
+
+        do {
+
+            logger.info("\nEssai n° {} /  {} de l'{} :", Constante.IA, (compteurOrdi + 1), getNombreDessais());
+            int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
+            trouve = compareSaisieEtCodeSecret(codeSecretSaisieParUtilisateur, propositionDeLordinateur, reponse);
+            logger.info("Proposition {} : {} -> Reponse : {} present, {} bien places.", Constante.IA, propositionDeLordinateur, reponse[0], reponse[1]);
+            compteurOrdi++;
+            if (trouve) {
+                vainqueur = Constante.IA;
+            }
+        } while (!trouve && nbEssais != compteurOrdi);
+
+        if (compteurOrdi == nbEssais && !trouve) {
+            logger.info("L'{} à perdu. Essai {} atteint.", Constante.IA, compteurOrdi);
+        }
+        if (trouve) {
+            logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteurOrdi);
+        }
+    }
 
     /**
      * Methode qui permet de lancer le jeu en mode Mastermind Challenger
      */
-    private void jouerMastermindDuel() {  // 90%
+    private void jouerMastermindDuel() {  // ok
 
 
         int lenght = getNombreDeChiffre();
@@ -89,7 +121,6 @@ public class Mastermind extends Jeu {
         int compteur = 0;
         int compteurOrdi = 0;
         int[] reponse = new int[lenght];
-        int[] bonChiffreAenleverDuRamdom = new int[lenght];
         boolean trouve = false;
         boolean premierJouerEstUtilisateur = true;
         String vainqueur = null;
@@ -119,7 +150,7 @@ public class Mastermind extends Jeu {
                 logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
                 int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
                 trouve = compareSaisieEtCodeSecret(codeSecretSaisieParUtilisateur, propositionDeLordinateur, reponse);
-                logger.info("Proposition {} : {} -> Reponse : {} present, {} bien places.",Constante.IA, propositionDeLordinateur, reponse[0], reponse[1]);
+                logger.info("Proposition {} : {} -> Reponse : {} present, {} bien places.", Constante.IA, propositionDeLordinateur, reponse[0], reponse[1]);
                 compteurOrdi++;
                 if (trouve) {
                     vainqueur = Constante.IA;
@@ -131,79 +162,12 @@ public class Mastermind extends Jeu {
         } while (!trouve && nbEssais != compteur);
 
         if (compteur == nbEssais && !trouve) {
-            logger.info("L'{} à perdu. Essai {} atteint.",Constante.IA, compteur);
+            logger.info("L'{} à perdu. Essai {} atteint.", Constante.IA, compteur);
         }
         if (trouve) {
             logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteur);
         }
     }
-
-    /**
-     * Methode qui permet de lancer le jeu en mode Mastermind Defenseur
-     */
-    private void jouerMastermindDefenseur() {
-        logger.info("Vous êtes en mode : Defenseur et vous devez donc inscrire un code que l'ordinateur vas tenter de deviner");
-        int[] random = Utilitaire.creationDuRandom(getDevMod()); //2 L'ordi genere un code de la meme longueur que la longueur defini dans properties
-        int[] nombrePourLaSolutionPc = new int[getNombreDeChiffre()];
-        logger.info("(Proposition faite par l'ordinateur : {}", random);
-        int[] chiffreATrouver = SaisieClavier();  //1 saisie un code  longueur defini par properties.
-        int compteur = 0;
-        int nbPresent = 0;
-        int nbBonnePlace = 0;
-        for (int k = 0; k < getNombreDessais(); k++) { //5 l'ordi retape le code jusqu'a "nbretry"
-
-            do { //3 Comparaison des random et code saisie par utilisateur.
-                Random nouveauRandom = new Random();
-                int[] nouveauRandomm = new int[getNombreDeChiffre()];
-                for (int f = 0; f < getNombreDeChiffre(); f++) {
-                    nouveauRandomm[f] = nouveauRandom.nextInt(getNombreDeChiffre() - nbBonnePlace);
-                }
-
-                if (compteur != 0) {
-                    random = nombrePourLaSolutionPc;
-                }
-                logger.info("(Proposition faite par l'ordinateur : {}", random);
-//            int[] chiffreATrouver = saisieClavier();  //1 saisie un code defini par properties.
-                for (int i = 0; i < getNombreDeChiffre(); i++) {
-                    int chiffreCourant = random[i];
-                    boolean estALaBonnePlace = false;
-
-                    boolean existeDansLeTableau = existDansLeTableau(chiffreCourant, chiffreATrouver);
-
-                    if (chiffreCourant == chiffreATrouver[i]) {
-                        estALaBonnePlace = true;
-                    }
-
-                    if (existeDansLeTableau && !estALaBonnePlace) {
-                        nbPresent++;
-                    }
-                    if (estALaBonnePlace) {
-                        nbBonnePlace++;
-                        nombrePourLaSolutionPc[i] = random[i];  // 4 recup de la bonne valeur et mise dans tableau à la valeur de i.
-
-                    }
-                    if (!existeDansLeTableau) {
-                        int[] nbZero = new int[getNombreDeChiffre()];
-
-                        nombrePourLaSolutionPc[i] = nbZero[i];
-
-                    }
-                }
-
-                logger.info("\nEssai n° {} /  {}   :", (compteur + 1), getNombreDessais());
-                compteur++;
-                logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", chiffreATrouver, nbPresent, nbBonnePlace);
-                nbPresent = 0;
-                nbBonnePlace = 0;
-            } while (getNombreDeChiffre() != (nbBonnePlace) && getNombreDessais() != (compteur));
-            if (compteur == getNombreDessais()) {
-                logger.info("Bravo ta combinaison n'a pas été trouvée en {} essais ", compteur);
-            } else if (nbBonnePlace == getNombreDeChiffre()) {
-                logger.info("Désolé l'ordinateur gagne en {} essais ", compteur);
-            }
-        }
-    }
-
 
     /**
      * Retourne vrai si le nombre nombreRecherche existe dans le tableau. Sinon retourne faux.
