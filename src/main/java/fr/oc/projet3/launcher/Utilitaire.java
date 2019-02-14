@@ -37,6 +37,7 @@ public class Utilitaire {
 
     /**
      * creation d'un tableau contenant des numeros aleatoire de taille (NB_CASE_VALUE)
+     *
      * @param existsRandoms Si un code generé aleatoirement existe deja il en sera regeneré un nouveau, et le nouveau sera stocké dans la liste.
      * @return un random de taille (NB_CASE_VALUE)
      */
@@ -51,12 +52,12 @@ public class Utilitaire {
                 resultatDuRandom[i] = random.nextInt(9);
             }
             Integer value = Integer.valueOf(resultatDuRandom.toString());
-            if(existsRandoms.contains(value)){
+            if (existsRandoms.contains(value)) {
                 randomExist = true;
             } else {
                 existsRandoms.add(value);
             }
-        }while (randomExist);
+        } while (randomExist);
         return resultatDuRandom;
     }
 

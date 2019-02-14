@@ -7,6 +7,11 @@ public enum TypeDeJeux {
     private String nom;
     private int code;
 
+    /**
+     * constructeur enum
+     * @param code de l'enum
+     * @param nom de l'enum
+     */
     TypeDeJeux(int code, String nom) {
 
         this.code = code;
@@ -20,28 +25,26 @@ public enum TypeDeJeux {
      * @return
      */
     public static TypeDeJeux getMode(int saisie) {
-        for (TypeDeJeux g : TypeDeJeux.values()) {
-            if (saisie == g.code) {
-                return g;
+        for (TypeDeJeux typeDeJeux : TypeDeJeux.values()) {
+            if (saisie == typeDeJeux.code) {
+                return typeDeJeux;
             }
         }
         return null;
     }
-//
-//    public static TypeDeJeux getNom (int saisie) {
-//        for (TypeDeJeux g : TypeDeJeux.values()) {
-//            if (saisie == g.code) {
-//                return g;
-//            }
-//        }
-//        return null;
-//    }
 
-
+    /**
+     * accesseur getteur
+     * @return code
+     */
     public int getCode() {
         return code;
     }
 
+    /**
+     * accesseur getteur
+     * @return nom
+     */
     public String getNom() {
         return nom;
     }

@@ -1,6 +1,5 @@
 package fr.oc.projet.games.recherchePlusMoins;
 
-import fr.oc.projet.enums.EnumModeDeJeux;
 import fr.oc.projet.games.Jeu;
 import fr.oc.projet3.launcher.Constante;
 import fr.oc.projet3.launcher.Utilitaire;
@@ -16,22 +15,6 @@ public class RecherchePlusMoins extends Jeu {
      */
     public RecherchePlusMoins() {
         Utilitaire.creationDuRandom(getDevMod());
-    }
-
-    /**
-     * Constructeur qui permet de construire le RecherchePlusMoins
-     *
-     * @param user          nom d'utilisateur
-     * @param modeDeJeu     1/2/3
-     * @param resultat      int code à decouvrir
-     * @param nombredessais pour limiter le nombres d'essai il faut les compter
-     * @param description   description du mode de jeu.
-     * @param devmod        boolean
-     * @param valeursaisie  les valeurs saisie par l'utilisateur ou l'ordi.
-     */
-    public RecherchePlusMoins(String user, EnumModeDeJeux modeDeJeu, boolean resultat, int nombredessais, String description, boolean devmod, int valeursaisie) {
-
-
     }
 
     /**
@@ -60,6 +43,9 @@ public class RecherchePlusMoins extends Jeu {
         }
     }
 
+    /**
+     * Methode qui permet de lancer le jeu en mode RecherchePlusMoinsChallenger
+     */
     private void jouerRecherchePlusMoinsChallenger() {  // 99% enlever les virgules entre les +,- dans le resultat.
 
         logger.info("Vous êtes en mode : Challenger vous devez tentez de deviner un code que l'ordinateur va generer !");
@@ -90,6 +76,9 @@ public class RecherchePlusMoins extends Jeu {
 
     }
 
+    /**
+     * Methode qui permet de lancer le jeu en mode RecherchePlusMoins Defenseur
+     */
     private void jouerRecherchePlusMoinsDefenseur() {// Virgule dans resultat
 
         int lenght = getNombreDeChiffre();
@@ -123,14 +112,16 @@ public class RecherchePlusMoins extends Jeu {
         }
     }
 
-    private void jouerRecherchePlusMoinsDuel() {  // gros probleme sur la comparaison de mon resultat, celui de la machine fonctionne
+    /**
+     * Methode qui permet de lancer le jeu en mode RecherchePlusMoins Duel
+     */
+    private void jouerRecherchePlusMoinsDuel() {
 
         int lenght = getNombreDeChiffre();
         int nbEssais = getNombreDessais();
         int[] codeGenereParLordi = Utilitaire.creationDuRandom(getDevMod()); // Virgule dans resultat
         int compteur = 0;
         int compteurOrdi = 0;
-        int[] reponse = new int[lenght];
         boolean trouve = false;
         boolean premierJouerEstUtilisateur = true;
         String vainqueur = null;
@@ -180,14 +171,20 @@ public class RecherchePlusMoins extends Jeu {
         }
     }
 
+    /**
+     * @param codeSaisie   permet de recuperer le code et de le comparer avec le code secret à decouvrir
+     * @param codeSecret   code secret à decouvrir
+     * @param tabPlusMoins le tableau permet de renvoyer un affichage de plus et de moins pour pouvoir jouer
+     * @return sert juste à effectuer la vérification pour la victoire.
+     */
 
-    public boolean ComparerCodeSecretAvecPlusOuMoins(int[] saisieClavier, int[] codeSecret, char[] tabPlusMoins) {
+    public boolean ComparerCodeSecretAvecPlusOuMoins(int[] codeSaisie, int[] codeSecret, char[] tabPlusMoins) {
         int compteur = 0;
-        for (int i = 0; i < saisieClavier.length; i++) {
+        for (int i = 0; i < codeSaisie.length; i++) {
 
-            if (saisieClavier[i] < codeSecret[i]) {
+            if (codeSaisie[i] < codeSecret[i]) {
                 tabPlusMoins[i] = '+';
-            } else if (saisieClavier[i] > codeSecret[i]) {
+            } else if (codeSaisie[i] > codeSecret[i]) {
                 tabPlusMoins[i] = '-';
             } else {
                 tabPlusMoins[i] = '=';
@@ -195,7 +192,7 @@ public class RecherchePlusMoins extends Jeu {
             }
         }
 
-        if (compteur == saisieClavier.length) {
+        if (compteur == codeSaisie.length) {
             return true;
         } else
 

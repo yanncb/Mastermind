@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- *
- */
+
 public class ChargementDesProprietes {
     /**
      * Nom de la valeur de la propriete dans le fichier properties

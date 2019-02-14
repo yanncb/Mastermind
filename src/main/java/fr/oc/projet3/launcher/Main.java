@@ -15,7 +15,7 @@ public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
-        String devOrProd =null;
+        String devOrProd = null;
         if (args.length > 0) {
             switch (args[0]) {
                 case Constante.MODE_DEV:
@@ -28,11 +28,10 @@ public class Main {
                     break;
                 default:
                     logger.error("Le mode {} n'existe pas.", args[0]);
-
             }
         } else {
             logger.info("Pas de parametres, verification dans le fichier de proprietes.");
-            if(ChargementDesProprietes.MOD_DEV_VALUE!=null) {
+            if (ChargementDesProprietes.MOD_DEV_VALUE != null) {
                 switch (ChargementDesProprietes.MOD_DEV_VALUE) {
                     case Constante.MODE_DEV:
                         devOrProd = Constante.MODE_DEV;
@@ -45,10 +44,10 @@ public class Main {
                     default:
                         logger.error("Aucun mode detecté dans les proprietes.");
                 }
-            }else {
+            } else {
                 logger.error("Pas de parametres dans les proprietes.");
             }
-            }
+        }
 
         if (devOrProd != null) {
 
@@ -115,8 +114,6 @@ public class Main {
         return mode;
     }
 
-
-
     /**
      * méthode pour choisir le type de jeu.
      *
@@ -125,7 +122,7 @@ public class Main {
     private static Integer selectGameType() {
         logger.info("Bienvenue, il est temps de choisir votre type de jeu !");
         for (TypeDeJeux typeDeJeux : TypeDeJeux.values()) {
-            logger.info("Tapez {} pour pour lancer {}", typeDeJeux.getCode(),typeDeJeux.getNom());
+            logger.info("Tapez {} pour pour lancer {}", typeDeJeux.getCode(), typeDeJeux.getNom());
         }
         return sc.nextInt();
     }

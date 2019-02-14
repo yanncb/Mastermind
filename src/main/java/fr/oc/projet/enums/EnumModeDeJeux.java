@@ -12,25 +12,21 @@ public enum EnumModeDeJeux {
     private int numero;
     private String nom;
 
-    public int getNumero() {
-        return numero;
-    }
-
-    public String getNom() {
-
-        return nom;
-    }
-
+    /**
+     *
+     * @param code de l'enum
+     * @param nom de l'enum
+     */
     EnumModeDeJeux(int code, String nom) {
         this.numero = code;
         this.nom = nom;
     }
 
     /**
-     * Retourne l'enum en fonction du numero
+     * choix de l'enum en fonction du numero
      *
-     * @param code
-     * @return
+     * @param code numero de l'enum.
+     * @return L'enum choisie
      */
     public static EnumModeDeJeux getMode(int code) {
         for (EnumModeDeJeux modeDeJeux : EnumModeDeJeux.values()) {
@@ -38,10 +34,15 @@ public enum EnumModeDeJeux {
                 return modeDeJeux;
             }
         }
-       return null;
+        return null;
     }
 
-    public static TypeDeJeux getNom (int saisie) {
+    /**
+     * getteur nom
+     * @param saisie
+     * @return
+     */
+    public static TypeDeJeux getNom(int saisie) {
         for (TypeDeJeux g : TypeDeJeux.values()) {
             if (saisie == g.getCode()) {
                 return g;
@@ -50,24 +51,14 @@ public enum EnumModeDeJeux {
         return null;
     }
 
-    /**
-     * Retourne l'enum en fonction du numero
-     *
-     * @param code
-     * @return
-     */
-    public static EnumModeDeJeux getMode2(int code) {
-        EnumModeDeJeux[] tableauDesModesDeJeux = EnumModeDeJeux.values();
-        for (int i = 0; i < tableauDesModesDeJeux.length; i++) {
-            EnumModeDeJeux modeDeJeu = tableauDesModesDeJeux[i];
-            if (code == modeDeJeu.numero) {
-                return modeDeJeu;
-            }
-        }
-        return null;
+    public int getNumero() {
+        return numero;
     }
 
+    public String getNom() {
 
+        return nom;
+    }
 
 
 }

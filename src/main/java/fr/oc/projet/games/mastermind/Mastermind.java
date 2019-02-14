@@ -114,7 +114,6 @@ public class Mastermind extends Jeu {
      */
     private void jouerMastermindDuel() {  // ok
 
-
         int lenght = getNombreDeChiffre();
         int nbEssais = getNombreDessais();
         int[] codeGenereParLordi = Utilitaire.creationDuRandom(getDevMod()); // recuperation du random dans la methode creationduRandom dans utilitaire, et le met dans un tableau codeGenereParLordi
@@ -158,7 +157,6 @@ public class Mastermind extends Jeu {
                 premierJouerEstUtilisateur = true;
             }
 
-
         } while (!trouve && nbEssais != compteur);
 
         if (compteur == nbEssais && !trouve) {
@@ -170,8 +168,7 @@ public class Mastermind extends Jeu {
     }
 
     /**
-     * Retourne vrai si le nombre nombreRecherche existe dans le tableau. Sinon retourne faux.
-     *
+     * Retourne vrai si le nombre nombreRecherche existe dans le tableau, Sinon retourne faux.
      * @param nombreRecherche Nombre recherché dans le tableau
      * @param tableau         Tableau dans lequel on cherche le nombre
      * @return
@@ -184,16 +181,17 @@ public class Mastermind extends Jeu {
      * Méthode pour comparer le code secret et la saisie du joueur.
      *
      * @param codeSecret    : code secret à deviner
-     * @param saisieClavier : saisie clavier utilisateur
+     * @param codeSaisie : codeSaisie à comparer
      * @param reponse       : retourne le nombre de bonne places et présent.
-     * @return booleen indiquant si la saisie clavier correspond au code secret à deviner.
+     * @return boolean indiquant si la saisie clavier correspond au code secret à deviner.
      */
-    public boolean compareSaisieEtCodeSecret(int[] codeSecret, int[] saisieClavier, int[] reponse) {
+
+    public boolean compareSaisieEtCodeSecret(int[] codeSecret, int[] codeSaisie, int[] reponse) {
         int nbPresent = 0;
         int nbBonnePlace = 0;
         int compteur = codeSecret.length;
         for (int i = 0; i < compteur; i++) {
-            int chiffreCourant = saisieClavier[i];
+            int chiffreCourant = codeSaisie[i];
             boolean estALaBonnePlace = false;
             boolean existDansLeTableau = existDansLeTableau(chiffreCourant, codeSecret);
             if (chiffreCourant == codeSecret[i]) {
