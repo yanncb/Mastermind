@@ -6,23 +6,23 @@ import fr.oc.projet3.launcher.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Arrays;
+
 public class RecherchePlusMoins extends Jeu {
 
     private static final Logger logger = LogManager.getLogger(RecherchePlusMoins.class);
 
     /**
-     * Constructeur vide qui permet d'appeler RecherchePlusMoins sans lui donner de param.
+     * Constructeur vide qui permet d'appeler RecherchePlusMoins sans lui donner de paramètre.
      */
     public RecherchePlusMoins() {
-        Utilitaire.creationDuRandom(getDevMod());
     }
 
     /**
      * Permet de lancer le jeu et d'en selectionner un mode!.
      */
     public void jouer() {
-        logger.info("Vous avez  : {} d'essais et {} cases à trouver", getNombreDessais(), getNombreDeChiffre());
-        // switch case pour les modes simple, Defenseur et duel.
+        logger.info("Vous avez  : {} éssais et {} cases à trouver", getNombreDessais(), getNombreDeChiffre());
         switch (getModeDeJeu()) {
             case CHALLENGER: {
                 jouerRecherchePlusMoinsChallenger();
@@ -44,29 +44,28 @@ public class RecherchePlusMoins extends Jeu {
     }
 
     /**
-     * Methode qui permet de lancer le jeu en mode RecherchePlusMoinsChallenger
+     * Methode qui permet de lancer le jeu en mode Challenger
      */
-    private void jouerRecherchePlusMoinsChallenger() {  // 99% enlever les virgules entre les +,- dans le resultat.
+    private void jouerRecherchePlusMoinsChallenger() {
 
         logger.info("Vous êtes en mode : Challenger vous devez tentez de deviner un code que l'ordinateur va generer !");
         int[] random = Utilitaire.creationDuRandom(getDevMod());
         int compteur = 0;
-        int[] reponse = new int[2];
         boolean trouve = false;
         int nbEssais = getNombreDessais();
-        int lenght = getNombreDeChiffre();
-        char[] tabPlusOuMoins = new char[lenght];
+        int longueur = getNombreDeChiffre();
+        String[] tabPlusOuMoins = new String[longueur];
 
         do {
 
-            logger.info("\nEssai n° {} /  {}   :", (compteur + 1), nbEssais);
+            logger.info("Essai n° {} /  {}   :", (compteur + 1), nbEssais);
             int[] saisieClavier = SaisieClavier();
-            trouve = ComparerCodeSecretAvecPlusOuMoins(saisieClavier, random, tabPlusOuMoins);
+            trouve = comparerCodeSecretAvecPlusOuMoins(saisieClavier, random, tabPlusOuMoins);
 
-            logger.info("Proposition : {} -> Réponse : {}.", saisieClavier, tabPlusOuMoins);
+            logger.info("Proposition : {} -> Réponse : {}.", saisieClavier, formatterTableau(tabPlusOuMoins));
             compteur++;
 
-        } while (!trouve && compteur <= nbEssais);
+        } while (!trouve && compteur != nbEssais);
         if (trouve) {
             logger.info("Bravo !!! Tu gagne en {} essais ", compteur);
         }
@@ -77,125 +76,131 @@ public class RecherchePlusMoins extends Jeu {
     }
 
     /**
-     * Methode qui permet de lancer le jeu en mode RecherchePlusMoins Defenseur
+     * Methode qui permet de lancer le jeu en mode Defenseur
      */
-    private void jouerRecherchePlusMoinsDefenseur() {// Virgule dans resultat
+    private void jouerRecherchePlusMoinsDefenseur() {
 
-        int lenght = getNombreDeChiffre();
+        int longueur = getNombreDeChiffre();
         int nbEssais = getNombreDessais();
-        int compteurOrdi = 0;
-        int[] reponse = new int[lenght];
+        int compteurIA = 0;
         boolean trouve = false;
         String vainqueur = null;
-        char[] tabPlusOuMoins = new char[lenght];
-        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", lenght);
+        String[] tabPlusOuMoins = new String[longueur];
+        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", longueur);
         int[] codeSecretSaisieParUtilisateur = SaisieClavier();
         logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
 
         do {
 
-            logger.info("\nEssai n° {} /  {} de l'{} :", Constante.IA, (compteurOrdi + 1), getNombreDessais());
+            logger.info("Essai n° {} /  {} de l'{} :", Constante.IA, (compteurIA + 1), getNombreDessais());
             int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
-            trouve = ComparerCodeSecretAvecPlusOuMoins(propositionDeLordinateur, codeSecretSaisieParUtilisateur, tabPlusOuMoins);
-            logger.info("Proposition de l'{} : {} -> Reponse : {} .", Constante.IA, propositionDeLordinateur, tabPlusOuMoins);
-            compteurOrdi++;
+            trouve = comparerCodeSecretAvecPlusOuMoins(propositionDeLordinateur, codeSecretSaisieParUtilisateur, tabPlusOuMoins);
+            logger.info("Proposition de l'{} : {} -> Reponse : {} .", Constante.IA, propositionDeLordinateur, formatterTableau(tabPlusOuMoins));
+            compteurIA++;
             if (trouve) {
                 vainqueur = Constante.IA;
             }
-        } while (!trouve && nbEssais != compteurOrdi);
+        } while (!trouve && nbEssais != compteurIA);
 
-        if (compteurOrdi == nbEssais && !trouve) {
-            logger.info("L'{} à perdu. Essai {} atteint.", Constante.IA, compteurOrdi);
+        if (compteurIA == nbEssais && !trouve) {
+            logger.info("L'{} à perdu. Essai {} atteint.", Constante.IA, compteurIA);
         }
         if (trouve) {
-            logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteurOrdi);
+            logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteurIA);
         }
     }
 
     /**
-     * Methode qui permet de lancer le jeu en mode RecherchePlusMoins Duel
+     * Methode qui permet de lancer le jeu en mode Duel
      */
     private void jouerRecherchePlusMoinsDuel() {
 
-        int lenght = getNombreDeChiffre();
-        int nbEssais = getNombreDessais();
+        int longueur = getNombreDeChiffre();
+        int nbEssais = getNombreDessais() * 2;
         int[] codeGenereParLordi = Utilitaire.creationDuRandom(getDevMod()); // Virgule dans resultat
-        int compteur = 0;
-        int compteurOrdi = 0;
+        int compteurUtilisateur = 0;
+        int compteurIA = 0;
+        int compteurTotal = 0;
         boolean trouve = false;
         boolean premierJouerEstUtilisateur = true;
         String vainqueur = null;
-        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", lenght);
+        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", longueur);
         int[] codeSecretSaisieParUtilisateur = SaisieClavier();
         logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
         int[] codeTapeParUtilisateur;
-        char[] tabPlusOuMoins = new char[lenght];
+        String[] tabPlusOuMoins = new String[longueur];
 
         do {
 
             if (premierJouerEstUtilisateur) {
-                logger.info("\nEssai n° {} /  {}   :", (compteur + 1), getNombreDessais());
+                logger.info("Essai n° {} /  {}   :", (compteurUtilisateur + 1), getNombreDessais());
                 logger.info("Combinaison secrete de {} {}", Constante.IA, codeGenereParLordi);
                 logger.info("Saisissez votre combinaison");
                 codeTapeParUtilisateur = SaisieClavier();
 
-                trouve = ComparerCodeSecretAvecPlusOuMoins(codeTapeParUtilisateur, codeGenereParLordi, tabPlusOuMoins);
-                logger.info("Proposition : {} -> Réponse : {}.", codeTapeParUtilisateur, tabPlusOuMoins);
-                compteur++;
+                trouve = comparerCodeSecretAvecPlusOuMoins(codeTapeParUtilisateur, codeGenereParLordi, tabPlusOuMoins);
+                logger.info("Proposition : {} -> Réponse : {}.", codeTapeParUtilisateur, formatterTableau(tabPlusOuMoins));
+                compteurUtilisateur++;
                 if (trouve) {
                     vainqueur = "Le joueur";
 
                 }
                 premierJouerEstUtilisateur = false;
             } else {
-                logger.info("\nEssai n° {} /  {} de l'{} :", Constante.IA, (compteurOrdi + 1), getNombreDessais());
+                logger.info("\nEssai n° {} /  {} de l'{} :", Constante.IA, (compteurIA + 1), getNombreDessais());
                 logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
                 int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
-                trouve = ComparerCodeSecretAvecPlusOuMoins(propositionDeLordinateur, codeSecretSaisieParUtilisateur, tabPlusOuMoins);
-                logger.info("Proposition {} : {} -> Reponse : {}.", Constante.IA, propositionDeLordinateur, tabPlusOuMoins);
-                compteurOrdi++;
+                trouve = comparerCodeSecretAvecPlusOuMoins(propositionDeLordinateur, codeSecretSaisieParUtilisateur, tabPlusOuMoins);
+                logger.info("Proposition {} : {} -> Reponse : {}.", Constante.IA, propositionDeLordinateur, formatterTableau(tabPlusOuMoins));
+                compteurIA++;
                 if (trouve) {
                     vainqueur = Constante.IA;
                 }
                 premierJouerEstUtilisateur = true;
             }
+            compteurTotal++;
 
+        } while (!trouve && nbEssais != compteurTotal);
 
-        } while (!trouve && nbEssais != compteur);
-
-        if (compteur == nbEssais && !trouve) {
-            logger.info("L'{} à perdu. Essai {} atteint.", Constante.IA, compteur);
+        if (compteurTotal == nbEssais && !trouve) {
+            logger.info("L'{} à perdu. Essai {} atteint.", Constante.IA, compteurUtilisateur);
         }
         if (trouve) {
-            logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteur);
+            logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteurUtilisateur);
         }
     }
 
     /**
+     * TODO : expliquer la méthode
+     *
      * @param codeSaisie   permet de recuperer le code et de le comparer avec le code secret à decouvrir
      * @param codeSecret   code secret à decouvrir
      * @param tabPlusMoins le tableau permet de renvoyer un affichage de plus et de moins pour pouvoir jouer
      * @return sert juste à effectuer la vérification pour la victoire.
      */
 
-    public boolean ComparerCodeSecretAvecPlusOuMoins(int[] codeSaisie, int[] codeSecret, char[] tabPlusMoins) {
+    public boolean comparerCodeSecretAvecPlusOuMoins(int[] codeSaisie, int[] codeSecret, String[] tabPlusMoins) {
         int compteur = 0;
         for (int i = 0; i < codeSaisie.length; i++) {
 
             if (codeSaisie[i] < codeSecret[i]) {
-                tabPlusMoins[i] = '+';
+                tabPlusMoins[i] = "+";
             } else if (codeSaisie[i] > codeSecret[i]) {
-                tabPlusMoins[i] = '-';
+                tabPlusMoins[i] = "-";
             } else {
-                tabPlusMoins[i] = '=';
+                tabPlusMoins[i] = "=";
                 compteur++;
             }
         }
 
         if (compteur == codeSaisie.length) {
             return true;
-        } else
-
+        } else {
             return false;
+        }
+    }
+
+    private String formatterTableau(String[] tabPlusMoins) {
+        return Arrays.asList(tabPlusMoins).toString().replace(",", "").replace(" ", "");
     }
 }

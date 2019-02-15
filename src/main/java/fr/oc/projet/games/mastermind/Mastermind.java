@@ -2,6 +2,7 @@ package fr.oc.projet.games.mastermind;
 
 import fr.oc.projet.games.Jeu;
 import fr.oc.projet3.launcher.Constante;
+import fr.oc.projet3.launcher.Main;
 import fr.oc.projet3.launcher.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +25,7 @@ public class Mastermind extends Jeu {
      * Permet de lancer le jeu et d'en selectionner un mode!.
      */
     public void jouer() {
-        logger.info("Vous avez  : {} d'essais et {} cases à trouver", getNombreDessais(), getNombreDeChiffre());
+        logger.info("Vous avez  : {} éssais et {} cases à trouver", getNombreDessais(), getNombreDeChiffre());
         // switch case pour les modes simple, Defenseur et duel.
         switch (getModeDeJeu()) {
             case CHALLENGER: {
@@ -49,7 +50,7 @@ public class Mastermind extends Jeu {
     /**
      * Methode qui permet de lancer le jeu en mode Mastermind simple
      */
-    private void jouerMastermindChallenger() {  // terminé !!
+    private void jouerMastermindChallenger() {
         logger.info("Vous êtes en mode : Mastermind vous devez tentez de deviner un code que l'ordinateur va generer !");
         int[] random = Utilitaire.creationDuRandom(getDevMod());
         int compteur = 0;
@@ -57,19 +58,39 @@ public class Mastermind extends Jeu {
         boolean trouve = false;
         int nbEssais = getNombreDessais();
         do {
-            // rajouter boucle for plutot que do while.
-            logger.info("\nEssai n° {} /  {}   :", (compteur + 1), nbEssais);
+            logger.info("Essai n° {} /  {}   :", (compteur + 1), nbEssais);
             int[] saisieClavier = SaisieClavier();
 
             trouve = compareSaisieEtCodeSecret(random, saisieClavier, reponse);
             logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", saisieClavier, reponse[0], reponse[1]);
             compteur++;
-        } while (!trouve && compteur <= nbEssais);
+        } while (!trouve && compteur != nbEssais);
         if (trouve) {
             logger.info("Bravo !!! Tu gagne en {} essais ", compteur);
+            logger.info("Souhaite tu rejouer ? Oui (1) / Non (2)/ Autre Jeu (3)");
+            int rejouer = scan.nextInt();
+            switch (rejouer) {
+                case 1: {
+                    jouer();
+                    break;
+                }
+                case 2: {
+                    System.exit(1);
+                    break;
+                }
+                case 3: {
+                    Main.selectGameType();
+                    break;
+                }
+                default: {
+                    logger.error("La saisie est incorrect ! : Souhaite tu rejouer ? Oui (1) / Non (2)/ Autre Jeu (3)");
+                }
+            }
+
         }
         if (!trouve && compteur == nbEssais) {
             logger.info("Tu as PERDU !!! tu as atteint tes {} essais ", compteur);
+            retrymod();
         }
 
     }
@@ -79,51 +100,52 @@ public class Mastermind extends Jeu {
      */
     private void jouerMastermindDefenseur() {
 
-        int lenght = getNombreDeChiffre();
+        int longueur = getNombreDeChiffre();
         int nbEssais = getNombreDessais();
-        int compteurOrdi = 0;
-        int[] reponse = new int[lenght];
+        int compteurIA = 0;
+        int[] reponse = new int[longueur];
         boolean trouve = false;
         String vainqueur = null;
-        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", lenght);
+        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", longueur);
         int[] codeSecretSaisieParUtilisateur = SaisieClavier();
         logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
 
         do {
 
-            logger.info("\nEssai n° {} /  {} de l'{} :", Constante.IA, (compteurOrdi + 1), getNombreDessais());
+            logger.info("Essai n° {} /  {} de l'{} :", Constante.IA, (compteurIA + 1), getNombreDessais());
             int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
             trouve = compareSaisieEtCodeSecret(codeSecretSaisieParUtilisateur, propositionDeLordinateur, reponse);
             logger.info("Proposition {} : {} -> Reponse : {} present, {} bien places.", Constante.IA, propositionDeLordinateur, reponse[0], reponse[1]);
-            compteurOrdi++;
+            compteurIA++;
             if (trouve) {
                 vainqueur = Constante.IA;
             }
-        } while (!trouve && nbEssais != compteurOrdi);
+        } while (!trouve && nbEssais != compteurIA);
 
-        if (compteurOrdi == nbEssais && !trouve) {
-            logger.info("L'{} à perdu. Essai {} atteint.", Constante.IA, compteurOrdi);
+        if (compteurIA == nbEssais && !trouve) {
+            logger.info("L'{} à perdu. Essai {} atteint.", Constante.IA, compteurIA);
         }
         if (trouve) {
-            logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteurOrdi);
+            logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteurIA);
         }
     }
 
     /**
      * Methode qui permet de lancer le jeu en mode Mastermind Challenger
      */
-    private void jouerMastermindDuel() {  // ok
+    private void jouerMastermindDuel() {
 
-        int lenght = getNombreDeChiffre();
-        int nbEssais = getNombreDessais();
+        int longueur = getNombreDeChiffre();
+        int nbEssais = getNombreDessais() * 2;
         int[] codeGenereParLordi = Utilitaire.creationDuRandom(getDevMod()); // recuperation du random dans la methode creationduRandom dans utilitaire, et le met dans un tableau codeGenereParLordi
-        int compteur = 0;
-        int compteurOrdi = 0;
-        int[] reponse = new int[lenght];
+        int compteurUtilisateur = 0;
+        int compteurIA = 0;
+        int compteurTotal = 0;
+        int[] reponse = new int[longueur];
         boolean trouve = false;
         boolean premierJouerEstUtilisateur = true;
         String vainqueur = null;
-        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", lenght);
+        logger.info("Saisissez le Code secret de {} chiffres, que l'ordinateur vas tenter de deviner.", longueur);
         int[] codeSecretSaisieParUtilisateur = SaisieClavier();
         logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
         int[] codeTapeParUtilisateur;
@@ -131,58 +153,60 @@ public class Mastermind extends Jeu {
         do {
 
             if (premierJouerEstUtilisateur) {
-                logger.info("\nEssai n° {} /  {}   :", (compteur + 1), getNombreDessais());
+                logger.info("Essai n° {} /  {}   :", (compteurUtilisateur + 1), getNombreDessais());
                 logger.info("Combinaison secrete de {} {}", Constante.IA, codeGenereParLordi);
                 logger.info("Saisissez votre combinaison");
                 codeTapeParUtilisateur = SaisieClavier();
 
                 trouve = compareSaisieEtCodeSecret(codeGenereParLordi, codeTapeParUtilisateur, reponse);
                 logger.info("Proposition : {} -> Réponse : {} présent, {} bien placés.", codeTapeParUtilisateur, reponse[0], reponse[1]);
-                compteur++;
+                compteurUtilisateur++;
                 if (trouve) {
                     vainqueur = "Le joueur";
 
                 }
                 premierJouerEstUtilisateur = false;
             } else {
-                logger.info("\nEssai n° {} /  {} de l'{} :", Constante.IA, (compteurOrdi + 1), getNombreDessais());
+                logger.info("\nEssai n° {} /  {} de l'{} :", Constante.IA, (compteurIA + 1), getNombreDessais());
                 logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
                 int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
                 trouve = compareSaisieEtCodeSecret(codeSecretSaisieParUtilisateur, propositionDeLordinateur, reponse);
                 logger.info("Proposition {} : {} -> Reponse : {} present, {} bien places.", Constante.IA, propositionDeLordinateur, reponse[0], reponse[1]);
-                compteurOrdi++;
+                compteurIA++;
                 if (trouve) {
                     vainqueur = Constante.IA;
                 }
                 premierJouerEstUtilisateur = true;
             }
+            compteurTotal++;
 
-        } while (!trouve && nbEssais != compteur);
+        } while (!trouve && nbEssais != compteurTotal);
 
-        if (compteur == nbEssais && !trouve) {
-            logger.info("L'{} à perdu. Essai {} atteint.", Constante.IA, compteur);
+        if (compteurUtilisateur == nbEssais && !trouve) {
+            logger.info("L'{} à perdu. Essai {} atteint.", Constante.IA, compteurUtilisateur);
         }
         if (trouve) {
-            logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteur);
+            logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteurUtilisateur);
         }
     }
 
     /**
      * Retourne vrai si le nombre nombreRecherche existe dans le tableau, Sinon retourne faux.
+     *
      * @param nombreRecherche Nombre recherché dans le tableau
      * @param tableau         Tableau dans lequel on cherche le nombre
      * @return
      */
     private static boolean existDansLeTableau(int nombreRecherche, int[] tableau) {
-        return Arrays.stream(tableau).anyMatch(i -> i == nombreRecherche); //refacto i -> i dans le tab nombreRecherche est ce qu'il y a une valeur qui correspond, si oui renvoie true, sinon renvoie false.
+        return Arrays.stream(tableau).anyMatch(i -> i == nombreRecherche);
     }
 
     /**
      * Méthode pour comparer le code secret et la saisie du joueur.
      *
-     * @param codeSecret    : code secret à deviner
+     * @param codeSecret : code secret à deviner
      * @param codeSaisie : codeSaisie à comparer
-     * @param reponse       : retourne le nombre de bonne places et présent.
+     * @param reponse    : retourne le nombre de bonne places et présent.
      * @return boolean indiquant si la saisie clavier correspond au code secret à deviner.
      */
 
@@ -205,6 +229,22 @@ public class Mastermind extends Jeu {
         reponse[0] = nbPresent;
         reponse[1] = nbBonnePlace;
         return (nbBonnePlace == compteur);
+    }
+
+    public static void retrymod() {  //------------------------------------------------------------------A FAIRE
+        logger.info("Souhaite tu rejouer ? Oui (1) / Non (2)/ Autre Jeu (3)");
+        int rejouer = scan.nextInt();
+        switch (rejouer) {
+            case 1: {
+
+            }
+            case 2: {
+                System.exit(1);
+            }
+            case 3: {
+                Main.selectGameType();
+            }
+        }
     }
 }
 

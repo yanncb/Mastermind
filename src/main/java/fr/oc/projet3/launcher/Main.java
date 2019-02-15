@@ -15,6 +15,7 @@ public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
+
         String devOrProd = null;
         if (args.length > 0) {
             switch (args[0]) {
@@ -77,7 +78,7 @@ public class Main {
      * @param choix Integer 1ou 2
      * @return jeux
      */
-    private static Jeu getJeu(Integer choix) {
+    public static Jeu getJeu(Integer choix) {
         Jeu jeu = null;
         switch (choix) {
             case 1: {
@@ -87,6 +88,10 @@ public class Main {
             case 2: {
                 jeu = new RecherchePlusMoins();
                 break;
+            }
+            case 3: {
+                logger.info("A bientot !");
+                System.exit(-1);
             }
             default: {
                 logger.info("Vous avez rentré un numéro qui ne correspond à aucun choix");
@@ -101,9 +106,9 @@ public class Main {
      *
      * @return le mode selectionné
      */
-    private static Integer selectGameMode() {
+    public static Integer selectGameMode() {
         logger.info("Choisissez votre mode de jeux : ");
-        for (EnumModeDeJeux modeDeJeux : EnumModeDeJeux.values()) {  // EnumModeDeJeux.values liste des enums de gamemode. La boucle for sert à parcourir les elements de ma liste enumere.
+        for (EnumModeDeJeux modeDeJeux : EnumModeDeJeux.values()) {
             logger.info("Pour {} tapez {}", modeDeJeux.getNom(), modeDeJeux.getNumero());
         }
         int mode = sc.nextInt();
@@ -119,10 +124,10 @@ public class Main {
      *
      * @return Scanner
      */
-    private static Integer selectGameType() {
+    public static Integer selectGameType() {
         logger.info("Bienvenue, il est temps de choisir votre type de jeu !");
         for (TypeDeJeux typeDeJeux : TypeDeJeux.values()) {
-            logger.info("Tapez {} pour pour lancer {}", typeDeJeux.getCode(), typeDeJeux.getNom());
+            logger.info("Tapez {} pour lancer {}", typeDeJeux.getCode(), typeDeJeux.getNom());
         }
         return sc.nextInt();
     }

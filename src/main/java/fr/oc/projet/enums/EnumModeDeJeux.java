@@ -8,7 +8,6 @@ public enum EnumModeDeJeux {
     DEFENDER(2, "Defender"),
     DUEL(3, "Duel");
 
-
     private int numero;
     private String nom;
 

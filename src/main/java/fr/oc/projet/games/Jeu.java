@@ -1,6 +1,7 @@
 package fr.oc.projet.games;
 
 import fr.oc.projet.enums.EnumModeDeJeux;
+import fr.oc.projet.games.mastermind.Mastermind;
 import fr.oc.projet3.launcher.Main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,21 +11,10 @@ import java.util.Scanner;
 
 public abstract class Jeu {
     public static Scanner scan = new Scanner(System.in);
-    private String user;
     private EnumModeDeJeux modeDeJeu;
-    private int resultat;
     private int nombreDessais;
-    private String description;
-
-
-    /**
-     * devMod est la valeur de devOrProd du main.
-     */
     private boolean devMod;
     private int nombreDeChiffre;
-    private int valeurSaisie;
-    private static final char OK = 'o';
-    private static final char KO = 'x';
 
     public Jeu() {
     }
@@ -38,28 +28,30 @@ public abstract class Jeu {
     }
 
     /**
-     * Constructeur vide qui permet d'appeler MasterMind sans lui donner de param.
+     * TODO finir le mode rejouer au meme jeu !!
+     * Methode qui permet de relancer le jeu ou d'en choisir un autre.
      */
-
-    public void retrymod() {  //------------------------------------------------------------------A VERIFIER
-        logger.info("Souhaitez vous refaire une partie ? Si oui Tapez 1, Si non Tapez 2");
-        int retry = Main.sc.nextInt();
-            switch (retry){
-                case 1 :
-                   // relancer le jeu
-                    break;
-                case 2 :
-                    logger.info("Aurevoir !");
-                    break;
-                default:
-                    logger.info("Saisie invalide le jeu vas se terminer. Vous pouvez relancer le jeu à tout moment ! Au revoir !");
+    public static void retrymod() {  //------------------------------------------------------------------A FAIRE
+        logger.info("Souhaite tu rejouer ? Oui (1) / Non (2)/ Autre Jeu (3)");
+        int rejouer = scan.nextInt();
+        switch (rejouer) {
+            case 1: {
+                Mastermind mastermind = new Mastermind();
+                mastermind.jouer();
             }
+            case 2: {
+                System.exit(1);
+            }
+            case 3: {
+                Main.selectGameType();
+            }
+        }
     }
 
     /**
      * Methode qui comme son nom l'indique permet de recuperer les saisie claviers en les mettant dans un tableau de int.
      *
-     * @return saisieplayer
+     * @return saisiejoueur
      */
     public int[] SaisieClavier() {
        boolean saisieOk = false;
@@ -84,23 +76,6 @@ public abstract class Jeu {
        return saisieJoueur;
     }
 
-    /**
-     * Getter User
-     *
-     * @return utilisateur
-     */
-    public String getUser() {
-        return user;
-    }
-
-    /**
-     * Setter user
-     *
-     * @param user
-     */
-    public void setUser(String user) {
-        this.user = user;
-    }
 
     /**
      * Getter de l'enum des types de jeu disponibles
@@ -123,23 +98,6 @@ public abstract class Jeu {
     public void setDevMod(boolean devMod) {
         this.devMod = devMod;
     }
-    /**
-     * Getter resultat bool
-     *
-     * @return resultat
-     */
-    public int isResultat() {
-        return resultat;
-    }
-
-    /**
-     * Setter resultat bool
-     *
-     * @return resultat
-     */
-    public void setResultat(int resultat) {
-        this.resultat = resultat;
-    }
 
     /**
      * Getter Nbr d'essai
@@ -160,24 +118,6 @@ public abstract class Jeu {
     }
 
     /**
-     * Getter description
-     *
-     * @return description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Setter description
-     *
-     * @return description
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
      * Getter du Developpeur mode.
      *
      * @return mode boolean
@@ -186,25 +126,6 @@ public abstract class Jeu {
         return devMod;
     }
 
-
-
-    /**
-     * Valeur saisie par l'utilisateur
-     *
-     * @return setteur de valeur saisie
-     */
-    public int getValeurSaisie() {
-        return valeurSaisie;
-    }
-
-    /**
-     * Valeur saisie par l'utilisateur
-     *
-     * @return setteur de valeur saisie
-     */
-    public void setValeurSaisie(int valeurSaisie) {
-        this.valeurSaisie = valeurSaisie;
-    }
 
     /**
      * Nombre de chiffre servant à donner la longueur du résultat à trouver.
@@ -222,24 +143,5 @@ public abstract class Jeu {
      */
     public void setNombreDeChiffre(int nombreChiffre) {
         this.nombreDeChiffre = nombreChiffre;
-    }
-
-
-    /**
-     * Ok
-     *
-     * @return un symbole de ok
-     */
-    public static char getOK() {
-        return OK;
-    }
-
-    /**
-     * KO
-     *
-     * @return un symbole de KO
-     */
-    public static char getKO() {
-        return KO;
     }
 }
