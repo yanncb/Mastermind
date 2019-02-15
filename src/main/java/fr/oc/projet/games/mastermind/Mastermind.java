@@ -2,11 +2,9 @@ package fr.oc.projet.games.mastermind;
 
 import fr.oc.projet.games.Jeu;
 import fr.oc.projet3.launcher.Constante;
-import fr.oc.projet3.launcher.Main;
 import fr.oc.projet3.launcher.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.Arrays;
 
 
@@ -182,7 +180,7 @@ public class Mastermind extends Jeu {
     }
 
     /**
-     * Méthode pour comparer le code secret et la saisie du joueur.
+     * Méthode pour comparer le code secret et la saisie du joueur, et retourner un tableau de reponse.
      *
      * @param codeSecret : code secret à deviner
      * @param codeSaisie : codeSaisie à comparer

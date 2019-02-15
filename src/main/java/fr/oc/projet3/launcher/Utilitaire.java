@@ -43,22 +43,22 @@ public class Utilitaire {
      */
     public static int[] creationDuRandom(List<Integer> existsRandoms) {
 
-        int nbCaseValue = Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE);
-        int[] resultatDuRandom = new int[nbCaseValue];
+        int nbCase = Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE);
+        int[] resultatDeLAleatoire = new int[nbCase];
         Random random = new Random();
-        boolean randomExist = false;
+        boolean aleatoireExiste = false;
         do {
-            for (int i = 0; i < nbCaseValue; i++) {
-                resultatDuRandom[i] = random.nextInt(9);
+            for (int i = 0; i < nbCase; i++) {
+                resultatDeLAleatoire[i] = random.nextInt(9);
             }
-            Integer value = Integer.valueOf(resultatDuRandom.toString());
-            if (existsRandoms.contains(value)) {
-                randomExist = true;
+            Integer valeur = Integer.valueOf(resultatDeLAleatoire.toString());
+            if (existsRandoms.contains(valeur)) {
+                aleatoireExiste = true;
             } else {
-                existsRandoms.add(value);
+                existsRandoms.add(valeur);
             }
-        } while (randomExist);
-        return resultatDuRandom;
+        } while (aleatoireExiste);
+        return resultatDeLAleatoire;
     }
 
 

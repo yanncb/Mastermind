@@ -5,7 +5,6 @@ import fr.oc.projet3.launcher.Constante;
 import fr.oc.projet3.launcher.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.Arrays;
 
 public class RecherchePlusMoins extends Jeu {
@@ -171,7 +170,8 @@ public class RecherchePlusMoins extends Jeu {
     }
 
     /**
-     * TODO : expliquer la méthode
+     * La methode permet de comparer le code secret avec le code saisie (par l'IA ou l'utilisateur) et de faire un
+     * retour par des symboles.+-=
      *
      * @param codeSaisie   permet de recuperer le code et de le comparer avec le code secret à decouvrir
      * @param codeSecret   code secret à decouvrir
@@ -202,6 +202,7 @@ public class RecherchePlusMoins extends Jeu {
 
     /**
      * Methode qui permet de modifier le texte enlever les espaces et les virgules.
+     *
      * @param tabPlusMoins tableau à modifier
      * @return valeur modifiée.
      */

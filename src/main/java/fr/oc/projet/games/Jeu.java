@@ -3,7 +3,6 @@ package fr.oc.projet.games;
 import fr.oc.projet.enums.EnumModeDeJeux;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.Scanner;
 
 
@@ -74,6 +73,11 @@ public abstract class Jeu {
         this.modeDeJeu = modeDeJeu;
     }
 
+    /**
+     * Setter du boolean si devMod ou pas.
+     *
+     * @return mode de jeu
+     */
     public void setDevMod(boolean devMod) {
         this.devMod = devMod;
     }

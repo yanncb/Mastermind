@@ -7,7 +7,6 @@ import fr.oc.projet.games.mastermind.Mastermind;
 import fr.oc.projet.games.recherchePlusMoins.RecherchePlusMoins;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.Scanner;
 
 public class Main {
@@ -73,7 +72,7 @@ public class Main {
     }
 
     /**
-     * Permet de choisir le type de jeu
+     * Permet de creer le jeu
      *
      * @param choix Integer 1ou 2
      * @return jeux
@@ -102,7 +101,7 @@ public class Main {
     }
 
     /**
-     * Choisir le mode de jeu
+     * Choisir le mode de jeu en fonction de l'enum
      *
      * @return le mode selectionné
      */
@@ -120,23 +119,27 @@ public class Main {
     }
 
     /**
-     * méthode pour choisir le type de jeu.
+     * méthode pour choisir le type de jeu en fonction de l'enum.
      *
-     * @return Scanner
+     * @return le mode selectionné
      */
     public static Integer selectGameType() {
         logger.info("Bienvenue, il est temps de choisir votre type de jeu !");
         for (TypeDeJeux typeDeJeux : TypeDeJeux.values()) {
             logger.info("Tapez {} pour lancer {}", typeDeJeux.getCode(), typeDeJeux.getNom());
         }
-        return sc.nextInt();
+        int mode = sc.nextInt();
+        if (mode > EnumModeDeJeux.values().length || mode < 0) {
+            logger.info("Vous avez choisi une valeur hors interval");
+            selectGameType();
+        }
+        return mode;
     }
 
     /**
-     * TODO finir le mode rejouer au meme jeu !!
      * Methode qui permet de relancer le jeu ou d'en choisir un autre.
      */
-    public static void retrymod(Jeu jeu) {  //------------------------------------------------------------------A FAIRE
+    public static void retrymod(Jeu jeu) {
         logger.info("Souhaite tu rejouer ? Oui (1) / Non (2)/ Autre Jeu (3)");
         int rejouer = sc.nextInt();
         switch (rejouer) {
