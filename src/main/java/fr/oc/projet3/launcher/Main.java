@@ -66,7 +66,7 @@ public class Main {
             jeu.setNombreDessais(Integer.parseInt(ChargementDesProprietes.NB_RETRY_VALUE));
             jeu.setNombreDeChiffre(Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE));
             jeu.jouer();
-
+            retrymod(jeu);
         } else {
             logger.error("Le jeu ne se lancera pas aucun args et rien dans les properties.");
         }
@@ -130,5 +130,29 @@ public class Main {
             logger.info("Tapez {} pour lancer {}", typeDeJeux.getCode(), typeDeJeux.getNom());
         }
         return sc.nextInt();
+    }
+
+    /**
+     * TODO finir le mode rejouer au meme jeu !!
+     * Methode qui permet de relancer le jeu ou d'en choisir un autre.
+     */
+    public static void retrymod(Jeu jeu) {  //------------------------------------------------------------------A FAIRE
+        logger.info("Souhaite tu rejouer ? Oui (1) / Non (2)/ Autre Jeu (3)");
+        int rejouer = sc.nextInt();
+        switch (rejouer) {
+            case 1: {
+                jeu.jouer();
+                retrymod(jeu);
+                break;
+            }
+            case 2: {
+                System.exit(1234);
+                break;
+            }
+            case 3: {
+                Main.selectGameType();
+                break;
+            }
+        }
     }
 }

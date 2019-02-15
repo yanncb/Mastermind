@@ -200,6 +200,11 @@ public class RecherchePlusMoins extends Jeu {
         }
     }
 
+    /**
+     * Methode qui permet de modifier le texte enlever les espaces et les virgules.
+     * @param tabPlusMoins tableau à modifier
+     * @return valeur modifiée.
+     */
     private String formatterTableau(String[] tabPlusMoins) {
         return Arrays.asList(tabPlusMoins).toString().replace(",", "").replace(" ", "");
     }

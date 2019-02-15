@@ -1,8 +1,6 @@
 package fr.oc.projet.games;
 
 import fr.oc.projet.enums.EnumModeDeJeux;
-import fr.oc.projet.games.mastermind.Mastermind;
-import fr.oc.projet3.launcher.Main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,26 +25,7 @@ public abstract class Jeu {
     public void jouer() {
     }
 
-    /**
-     * TODO finir le mode rejouer au meme jeu !!
-     * Methode qui permet de relancer le jeu ou d'en choisir un autre.
-     */
-    public static void retrymod() {  //------------------------------------------------------------------A FAIRE
-        logger.info("Souhaite tu rejouer ? Oui (1) / Non (2)/ Autre Jeu (3)");
-        int rejouer = scan.nextInt();
-        switch (rejouer) {
-            case 1: {
-                Mastermind mastermind = new Mastermind();
-                mastermind.jouer();
-            }
-            case 2: {
-                System.exit(1);
-            }
-            case 3: {
-                Main.selectGameType();
-            }
-        }
-    }
+
 
     /**
      * Methode qui comme son nom l'indique permet de recuperer les saisie claviers en les mettant dans un tableau de int.

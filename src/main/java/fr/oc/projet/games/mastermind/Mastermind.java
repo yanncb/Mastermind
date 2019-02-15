@@ -67,30 +67,10 @@ public class Mastermind extends Jeu {
         } while (!trouve && compteur != nbEssais);
         if (trouve) {
             logger.info("Bravo !!! Tu gagne en {} essais ", compteur);
-            logger.info("Souhaite tu rejouer ? Oui (1) / Non (2)/ Autre Jeu (3)");
-            int rejouer = scan.nextInt();
-            switch (rejouer) {
-                case 1: {
-                    jouer();
-                    break;
-                }
-                case 2: {
-                    System.exit(1);
-                    break;
-                }
-                case 3: {
-                    Main.selectGameType();
-                    break;
-                }
-                default: {
-                    logger.error("La saisie est incorrect ! : Souhaite tu rejouer ? Oui (1) / Non (2)/ Autre Jeu (3)");
-                }
-            }
 
         }
         if (!trouve && compteur == nbEssais) {
             logger.info("Tu as PERDU !!! tu as atteint tes {} essais ", compteur);
-            retrymod();
         }
 
     }
@@ -231,21 +211,7 @@ public class Mastermind extends Jeu {
         return (nbBonnePlace == compteur);
     }
 
-    public static void retrymod() {  //------------------------------------------------------------------A FAIRE
-        logger.info("Souhaite tu rejouer ? Oui (1) / Non (2)/ Autre Jeu (3)");
-        int rejouer = scan.nextInt();
-        switch (rejouer) {
-            case 1: {
 
-            }
-            case 2: {
-                System.exit(1);
-            }
-            case 3: {
-                Main.selectGameType();
-            }
-        }
-    }
 }
 
 
