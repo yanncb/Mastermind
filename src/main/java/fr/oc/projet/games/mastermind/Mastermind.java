@@ -24,24 +24,24 @@ public class Mastermind extends Jeu {
      */
     public void jouer() {
         logger.info("Vous avez  : {} éssais et {} cases à trouver", getNombreDessais(), getNombreDeChiffre());
-        // switch case pour les modes simple, Defenseur et duel.
         switch (getModeDeJeu()) {
-            case CHALLENGER: {
+            case CHALLENGER:
                 jouerMastermindChallenger();
                 break;
-            }
-            case DEFENDER: {
+
+            case DEFENDER:
                 jouerMastermindDefenseur();
                 break;
-            }
-            case DUEL: {
+
+            case DUEL:
                 jouerMastermindDuel();
                 break;
-            }
-            default: {
+
+            default:
                 logger.info("Vous avez rentré un numéro qui ne correspond à aucun choix");
                 System.exit(-1);
-            }
+                break;
+
         }
     }
 

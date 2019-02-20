@@ -2,7 +2,7 @@ package fr.oc.projet.enums;
 
 public enum TypeDeJeux {
     MASTER_MIND(1, "Mastermind"),
-    MASTER_RECHERCHE_PLUS_MOINS(2, "MasterMind recherche plus moins"),
+    MASTER_RECHERCHE_PLUS_MOINS(2, "Recherche plus moins"),
     QUITTE(3, "Quitter le programme");
 
     private String nom;

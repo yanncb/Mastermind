@@ -39,7 +39,7 @@ public enum EnumModeDeJeux {
      * getteur nom
      *
      * @param saisie
-     * @return
+*     * @return
      */
     public static TypeDeJeux getNom(int saisie) {
         for (TypeDeJeux g : TypeDeJeux.values()) {
