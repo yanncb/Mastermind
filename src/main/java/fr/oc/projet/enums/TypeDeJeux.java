@@ -3,15 +3,16 @@ package fr.oc.projet.enums;
 public enum TypeDeJeux {
     MASTER_MIND(1, "Mastermind"),
     MASTER_RECHERCHE_PLUS_MOINS(2, "MasterMind recherche plus moins"),
-    QUITTE (3, "Quitter le programme");
+    QUITTE(3, "Quitter le programme");
 
     private String nom;
     private int code;
 
     /**
      * constructeur enum
+     *
      * @param code de l'enum
-     * @param nom de l'enum
+     * @param nom  de l'enum
      */
     TypeDeJeux(int code, String nom) {
 
@@ -36,6 +37,7 @@ public enum TypeDeJeux {
 
     /**
      * accesseur getteur
+     *
      * @return code
      */
     public int getCode() {
@@ -44,6 +46,7 @@ public enum TypeDeJeux {
 
     /**
      * accesseur getteur
+     *
      * @return nom
      */
     public String getNom() {

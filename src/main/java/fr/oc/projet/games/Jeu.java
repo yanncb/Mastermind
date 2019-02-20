@@ -3,6 +3,7 @@ package fr.oc.projet.games;
 import fr.oc.projet.enums.EnumModeDeJeux;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.Scanner;
 
 
@@ -25,33 +26,32 @@ public abstract class Jeu {
     }
 
 
-
     /**
      * Methode qui comme son nom l'indique permet de recuperer les saisie claviers en les mettant dans un tableau de int.
      *
      * @return saisiejoueur
      */
     public int[] SaisieClavier() {
-       boolean saisieOk = false;
-       int length = getNombreDeChiffre();
-       int[] saisieJoueur = new int[length];
-       do {
-           String nombreSaisi = scan.nextLine();
-           if (nombreSaisi.length()!=length) {
-               logger.info("La longueur du code saisie ne correspond pas a la valeur attendue.");
-               logger.info("Reessayez une saisie sur {}.", length);
-               saisieOk = false;
-           } else {
-             //   rajouter saisie joueur dans un tableau pour le mettre ensuite dans la saisie player.
-               for (int i = 0; i < length; i++) {
-                   saisieJoueur[i] = Integer.parseInt(String.valueOf(nombreSaisi.charAt(i)));// transformer la saisie en tableau.
-               }
+        boolean saisieOk = false;
+        int length = getNombreDeChiffre();
+        int[] saisieJoueur = new int[length];
+        do {
+            String nombreSaisi = scan.nextLine();
+            if (nombreSaisi.length() != length) {
+                logger.info("La longueur du code saisie ne correspond pas a la valeur attendue.");
+                logger.info("Reessayez une saisie sur {}.", length);
+                saisieOk = false;
+            } else {
+                //   rajouter saisie joueur dans un tableau pour le mettre ensuite dans la saisie player.
+                for (int i = 0; i < length; i++) {
+                    saisieJoueur[i] = Integer.parseInt(String.valueOf(nombreSaisi.charAt(i)));// transformer la saisie en tableau.
+                }
 
-               saisieOk = true;
-           }
-       }while (!saisieOk);
+                saisieOk = true;
+            }
+        } while (!saisieOk);
 
-       return saisieJoueur;
+        return saisieJoueur;
     }
 
 

@@ -7,6 +7,7 @@ import fr.oc.projet.games.mastermind.Mastermind;
 import fr.oc.projet.games.recherchePlusMoins.RecherchePlusMoins;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.Scanner;
 
 public class Main {

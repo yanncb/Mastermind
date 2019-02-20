@@ -5,6 +5,7 @@ import fr.oc.projet3.launcher.Constante;
 import fr.oc.projet3.launcher.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.Arrays;
 
 public class RecherchePlusMoins extends Jeu {

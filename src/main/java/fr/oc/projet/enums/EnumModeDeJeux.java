@@ -12,9 +12,8 @@ public enum EnumModeDeJeux {
     private String nom;
 
     /**
-     *
      * @param code de l'enum
-     * @param nom de l'enum
+     * @param nom  de l'enum
      */
     EnumModeDeJeux(int code, String nom) {
         this.numero = code;
@@ -38,6 +37,7 @@ public enum EnumModeDeJeux {
 
     /**
      * getteur nom
+     *
      * @param saisie
      * @return
      */
