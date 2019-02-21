@@ -54,11 +54,9 @@ public abstract class Jeu {
         return saisieJoueur;
     }
 
-
     /**
      * Getter de l'enum des types de jeu disponibles
-     *
-     * @return
+     * @return le mode de jeu
      */
     public EnumModeDeJeux getModeDeJeu() {
         return modeDeJeu;
@@ -66,17 +64,16 @@ public abstract class Jeu {
 
     /**
      * Setter de l'enum des types de jeu disponibles
-     *
-     * @return mode de jeu
+     * @param modeDeJeu les jeux dispos dans l'enum.
      */
     public void setModeDeJeu(EnumModeDeJeux modeDeJeu) {
         this.modeDeJeu = modeDeJeu;
     }
 
     /**
-     * Setter du boolean si devMod ou pas.
+     * Setter du boolean
      *
-     * @return mode de jeu
+     * @param devMod mode de jeu
      */
     public void setDevMod(boolean devMod) {
         this.devMod = devMod;
@@ -93,8 +90,7 @@ public abstract class Jeu {
 
     /**
      * Setter Nbr d'essai
-     *
-     * @return nombreDessais
+     * @param nombreDessais de la partie.
      */
     public void setNombreDessais(int nombreDessais) {
         this.nombreDessais = nombreDessais;
@@ -113,16 +109,16 @@ public abstract class Jeu {
     /**
      * Nombre de chiffre servant à donner la longueur du résultat à trouver.
      *
-     * @return getteur de nombreDeChiffre
+     * @return nombre de chiffres
      */
     public int getNombreDeChiffre() {
         return nombreDeChiffre;
     }
 
     /**
-     * Nombre de chiffre servant à donner la longueur du résultat à trouver.
+     * Setter
      *
-     * @return setteur de nombreDeChiffre
+     * @param nombreChiffre taille du tableau
      */
     public void setNombreDeChiffre(int nombreChiffre) {
         this.nombreDeChiffre = nombreChiffre;

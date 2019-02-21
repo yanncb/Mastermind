@@ -14,48 +14,44 @@ import java.util.Scanner;
 public class Main {
     public static Scanner sc = new Scanner(System.in);
     private static final Logger logger = LogManager.getLogger(Main.class);
-    private static String devOrProd;
+    private static String modeLancement;
 
     public static void main(String[] args) {
 
-        devOrProd = null;
-        String modeDeLancement = null;
-        if ( args.length > 0) {
-            modeDeLancement = args[0];
+        String paramLancement = null;
+        if (args.length > 0) {
+            paramLancement = args[0];
         } else if (ChargementDesProprietes.MOD_DEV_VALUE != null) {
             logger.info("Pas de parametres, verification dans le fichier de proprietes.");
-            modeDeLancement = ChargementDesProprietes.MOD_DEV_VALUE;
+            paramLancement = ChargementDesProprietes.MOD_DEV_VALUE;
         } else {
-            logger.error("Pas de parametres dans les proprietes.");
+            logger.error("Pas de parametres dans les proprietes. Sortie du jeu");
+            System.exit(0);
         }
 
-        if(modeDeLancement != null) {
-            switch (modeDeLancement) {
-                case Constante.MODE_DEV:
-                    devOrProd = Constante.MODE_DEV;
-                    logger.info("Mode Dev");
-                    break;
-                case Constante.MODE_PROD:
-                    devOrProd = Constante.MODE_PROD;
-                    logger.info("Mode PROD");
-                    break;
-                default:
-                    logger.error("Le mode {} n'existe pas.", modeDeLancement);
-            }
+        switch (paramLancement) {
+            case Constante.MODE_DEV:
+                modeLancement = Constante.MODE_DEV;
+                logger.info("Mode Dev");
+                break;
+            case Constante.MODE_PROD:
+                modeLancement = Constante.MODE_PROD;
+                logger.info("Mode PROD");
+                break;
+            default:
+                logger.error("Le mode {} n'existe pas.  Sortie du jeu", paramLancement);
+                System.exit(0);
         }
-
-        if (devOrProd != null) {
-
-            Jeu jeu = lancementJeu(devOrProd);
-
-            retrymod(jeu);
-
-        } else {
-            logger.error("Le jeu ne se lancera pas aucun args et rien dans les properties.");
-        }
+        retrymod(lancementJeu(modeLancement));
     }
 
-    public static Jeu lancementJeu(String devOrProd) {
+    /**
+     * Méthode qui permet de choisir un jeu, le mode du jeu et de le lancer.
+     *
+     * @param modeLancement Mode de lancement du jeu : DEV ou PROD
+     * @return jeu : retourne l'instance de jeu paramétré.
+     */
+    public static Jeu lancementJeu(String modeLancement) {
         Integer choix = selectionnerJeu();
         Jeu jeu = getJeu(choix);
         logger.info("Vous entrez dans le jeu {}", TypeDeJeux.getMode(choix).getNom());
@@ -64,8 +60,7 @@ public class Main {
         logger.info("Vous avez choisi le mode {}", modeDeJeux.getNom());
         jeu.setModeDeJeu(modeDeJeux);
 
-
-        jeu.setDevMod(Constante.MODE_DEV.equals(devOrProd));
+        jeu.setDevMod(Constante.MODE_DEV.equals(modeLancement));
         jeu.setNombreDessais(Integer.parseInt(ChargementDesProprietes.NB_RETRY_VALUE));
         jeu.setNombreDeChiffre(Integer.parseInt(ChargementDesProprietes.NB_CASE_VALUE));
         jeu.jouer();
@@ -73,11 +68,12 @@ public class Main {
         return jeu;
 
     }
+
     /**
      * Permet de creer le jeu
      *
-     * @param choix Integer 1ou 2
-     * @return jeux
+     * @param choix paramètre indiquant le code de jeu à lancer.
+     * @return jeu
      */
     public static Jeu getJeu(Integer choix) {
         Jeu jeu = null;
@@ -103,7 +99,7 @@ public class Main {
     }
 
     /**
-     * Choisir le mode de jeu en fonction de l'enum
+     * Choisir le mode de jeu.
      *
      * @return le mode selectionné
      */
@@ -154,21 +150,22 @@ public class Main {
     }
 
     /**
-     * Methode qui permet de relancer le jeu ou d'en choisir un autre.
+     *  Methode qui permet de relancer le jeu ou d'en choisir un autre.
+     * @param jeu à rejouer {@link Jeu}
      */
     public static void retrymod(Jeu jeu) {
-        int rejouer = 0;
+        int choixUtilisateur = 0;
 
         try {
             logger.info("Souhaites tu rejouer au même jeu ? Oui (1) / Choisir un autre Jeu (2) / Quitter (3)");
-            rejouer = sc.nextInt();
+            choixUtilisateur = sc.nextInt();
         } catch (InputMismatchException e) {
             logger.error("Caractere numerique uniquement");
             sc.nextLine();
             retrymod(jeu);
         }
 
-        switch (rejouer) {
+        switch (choixUtilisateur) {
 
             case 1:
                 jeu.jouer();
@@ -176,7 +173,7 @@ public class Main {
                 break;
 
             case 2:
-                lancementJeu(devOrProd);
+                lancementJeu(modeLancement);
                 retrymod(jeu);
                 break;
 

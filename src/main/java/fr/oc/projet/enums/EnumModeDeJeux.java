@@ -35,21 +35,6 @@ public enum EnumModeDeJeux {
         return null;
     }
 
-    /**
-     * getteur nom
-     *
-     * @param saisie
-*     * @return
-     */
-    public static TypeDeJeux getNom(int saisie) {
-        for (TypeDeJeux g : TypeDeJeux.values()) {
-            if (saisie == g.getCode()) {
-                return g;
-            }
-        }
-        return null;
-    }
-
     public int getNumero() {
         return numero;
     }

@@ -21,10 +21,10 @@ public enum TypeDeJeux {
     }
 
     /**
-     * Creation de l'enum en fonction de la saisie
+     * Selection du type de jeu .
      *
-     * @param saisie
-     * @return
+     * @param saisie choix utilisateur
+     * @return rien
      */
     public static TypeDeJeux getMode(int saisie) {
         for (TypeDeJeux typeDeJeux : TypeDeJeux.values()) {

@@ -12,8 +12,8 @@ public class Utilitaire {
 
     /**
      * Creer un nombre random du nombre cases defini ex :  Nombre de case 4  resultat  : [1,4,5,6]
-     *
-     * @return
+     * @param devOrProd savoir si le mode est en developpeur ou en production
+     * @return un tableau de chiffres aléatoire
      */
     public static int[] creationDuRandom(boolean devOrProd) {
 
