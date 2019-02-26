@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"fr.oc.projet.enums"},{"l":"fr.oc.projet.games"},{"l":"fr.oc.projet.games.mastermind"},{"l":"fr.oc.projet.games.recherchePlusMoins"},{"l":"fr.oc.projet3.launcher"}]

@@ -1,10 +1,10 @@
-package fr.oc.projet3.launcher;
+package fr.oc.lanceur;
 
-import fr.oc.projet.enums.EnumModeDeJeux;
+import fr.oc.projet.enums.ModeDeJeux;
 import fr.oc.projet.enums.TypeDeJeux;
-import fr.oc.projet.games.Jeu;
-import fr.oc.projet.games.mastermind.Mastermind;
-import fr.oc.projet.games.recherchePlusMoins.RecherchePlusMoins;
+import fr.oc.projet.jeux.Jeu;
+import fr.oc.projet.jeux.mastermind.Mastermind;
+import fr.oc.projet.jeux.recherchePlusMoins.RecherchePlusMoins;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,6 +16,11 @@ public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
     private static String modeLancement;
 
+    /**
+     * Classe principale de lancement du programme.
+     *
+     * @param args parametre de lancement du main.
+     */
     public static void main(String[] args) {
 
         String paramLancement = null;
@@ -42,7 +47,7 @@ public class Main {
                 logger.error("Le mode {} n'existe pas.  Sortie du jeu", paramLancement);
                 System.exit(0);
         }
-        retrymod(lancementJeu(modeLancement));
+        retryMod(lancementJeu(modeLancement));
     }
 
     /**
@@ -52,11 +57,12 @@ public class Main {
      * @return jeu : retourne l'instance de jeu paramétré.
      */
     public static Jeu lancementJeu(String modeLancement) {
+
         Integer choix = selectionnerJeu();
         Jeu jeu = getJeu(choix);
         logger.info("Vous entrez dans le jeu {}", TypeDeJeux.getMode(choix).getNom());
 
-        EnumModeDeJeux modeDeJeux = EnumModeDeJeux.getMode(selectionnerModeDeJeu());
+        ModeDeJeux modeDeJeux = ModeDeJeux.getMode(selectionnerModeDeJeu());
         logger.info("Vous avez choisi le mode {}", modeDeJeux.getNom());
         jeu.setModeDeJeu(modeDeJeux);
 
@@ -89,10 +95,13 @@ public class Main {
             case 3: {
                 logger.info("A bientot !");
                 System.exit(-1);
+                break;
             }
             default: {
                 logger.info("Vous avez rentré un numéro qui ne correspond à aucun choix");
-                System.exit(-1);
+
+                lancementJeu(modeLancement);
+
             }
         }
         return jeu;
@@ -107,7 +116,7 @@ public class Main {
         int mode = 0;
         try {
             logger.info("Choisissez votre mode de jeux : ");
-            for (EnumModeDeJeux modeDeJeux : EnumModeDeJeux.values()) {
+            for (ModeDeJeux modeDeJeux : ModeDeJeux.values()) {
                 logger.info("Tapez {} pour {}", modeDeJeux.getNumero(), modeDeJeux.getNom());
             }
             mode = sc.nextInt();
@@ -117,7 +126,7 @@ public class Main {
             selectionnerModeDeJeu();
         }
 
-        if (mode > EnumModeDeJeux.values().length || mode < 0) {
+        if (mode > ModeDeJeux.values().length || mode < 0) {
             logger.info("Vous avez choisi une valeur hors interval");
             selectionnerModeDeJeu();
         }
@@ -142,7 +151,7 @@ public class Main {
             sc.nextLine();
             selectionnerJeu();
         }
-        if (mode > EnumModeDeJeux.values().length || mode < 0) {
+        if (mode > ModeDeJeux.values().length || mode < 0) {
             logger.info("Vous avez choisi une valeur hors interval");
             selectionnerJeu();
         }
@@ -150,10 +159,11 @@ public class Main {
     }
 
     /**
-     *  Methode qui permet de relancer le jeu ou d'en choisir un autre.
+     * Methode qui permet de relancer le jeu ou d'en choisir un autre.
+     *
      * @param jeu à rejouer {@link Jeu}
      */
-    public static void retrymod(Jeu jeu) {
+    public static void retryMod(Jeu jeu) {
         int choixUtilisateur = 0;
 
         try {
@@ -162,19 +172,19 @@ public class Main {
         } catch (InputMismatchException e) {
             logger.error("Caractere numerique uniquement");
             sc.nextLine();
-            retrymod(jeu);
+            retryMod(jeu);
         }
 
         switch (choixUtilisateur) {
 
             case 1:
                 jeu.jouer();
-                retrymod(jeu);
+                retryMod(jeu);
                 break;
 
             case 2:
                 lancementJeu(modeLancement);
-                retrymod(jeu);
+                retryMod(jeu);
                 break;
 
             case 3:

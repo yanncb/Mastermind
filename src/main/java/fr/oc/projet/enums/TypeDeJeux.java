@@ -1,5 +1,8 @@
 package fr.oc.projet.enums;
 
+/**
+ * Type énumeré listant les jeux.
+ */
 public enum TypeDeJeux {
     MASTER_MIND(1, "Mastermind"),
     MASTER_RECHERCHE_PLUS_MOINS(2, "Recherche plus moins"),

@@ -1,4 +1,4 @@
-package fr.oc.projet3.launcher;
+package fr.oc.lanceur;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,6 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * La classe utilitaire contient l'algorithme de creation du random et l'algo qui repertorie les differents code deja generé pour ne pas
+ * les reutiliser.
+ */
 public class Utilitaire {
     private static final Logger logger = LogManager.getLogger(Utilitaire.class);
 

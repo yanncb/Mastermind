@@ -1,10 +1,12 @@
-package fr.oc.projet3.launcher;
+package fr.oc.lanceur;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-
+/**
+ * La classe ChargementDesProprietes permet de recuperer et d'utiliser les proprietes dans le fichier config.properties.
+ */
 public class ChargementDesProprietes {
     /**
      * Nom de la valeur de la propriete dans le fichier properties

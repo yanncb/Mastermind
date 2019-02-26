@@ -1,20 +1,21 @@
-package fr.oc.projet.games.recherchePlusMoins;
+package fr.oc.projet.jeux.recherchePlusMoins;
 
-import fr.oc.projet.games.Jeu;
-import fr.oc.projet3.launcher.Utilitaire;
+import fr.oc.projet.jeux.Jeu;
+import fr.oc.lanceur.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 
-import static fr.oc.projet3.launcher.Constante.*;
+import static fr.oc.lanceur.Constante.*;
 
 public class RecherchePlusMoins extends Jeu {
 
     private static final Logger logger = LogManager.getLogger(RecherchePlusMoins.class);
 
     /**
-     * Constructeur vide qui permet d'appeler RecherchePlusMoins sans lui donner de paramètre.
+     * La classe RecherchePlusMoins permet de definir les modes de jeu, et de lancer le jeu, elle contient également les algorithmes
+     * qui permettent le bon fonctionnement du jeu.
      */
     public RecherchePlusMoins() {
     }
@@ -73,6 +74,7 @@ public class RecherchePlusMoins extends Jeu {
         }
         if (!trouve && compteur == nbEssais) {
             logger.info("Tu as PERDU !!! tu as atteint tes {} essais ", compteur);
+            logger.info("Le code generé à deviner etait {}" , random);
         }
 
     }
@@ -105,7 +107,7 @@ public class RecherchePlusMoins extends Jeu {
         } while (!trouve && nbEssais != compteurIA);
 
         if (compteurIA == nbEssais && !trouve) {
-            logger.info("L'{} à perdu. Essai {} atteint.", IA, compteurIA);
+            logger.info("L'{} à perdu.{} essai atteint.", IA, compteurIA);
         }
         if (trouve) {
             logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteurIA);
@@ -149,7 +151,7 @@ public class RecherchePlusMoins extends Jeu {
                 }
                 premierJouerEstUtilisateur = false;
             } else {
-                logger.info("\nEssai n° {} /  {} de l'{} :", IA, (compteurIA + 1), getNombreDessais());
+                logger.info("\nEssai n° {} /  {} de l'{} :",  (compteurIA + 1), getNombreDessais(), IA);
                 logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
                 int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
                 trouve = comparerCodeSecretAvecPlusOuMoins(propositionDeLordinateur, codeSecretSaisieParUtilisateur, tabPlusOuMoins);
@@ -165,7 +167,10 @@ public class RecherchePlusMoins extends Jeu {
         } while (!trouve && nbEssais != compteurTotal);
 
         if (compteurTotal == nbEssais && !trouve) {
-            logger.info("L'{} à perdu. Essai {} atteint.", IA, compteurUtilisateur);
+            logger.info("{} à perdu. {} essai  atteint.", vainqueur, compteurUtilisateur);
+            if (vainqueur == "Le joueur"){
+                logger.info("Le code generé à deviner etait {}" , codeGenereParLordi);
+            }
         }
         if (trouve) {
             logger.info("Bravo !!! {} a gagné en {} essais", vainqueur, compteurUtilisateur);
