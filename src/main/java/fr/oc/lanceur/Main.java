@@ -48,6 +48,7 @@ public class Main {
                 System.exit(0);
         }
         retryMod(lancementJeu(modeLancement));
+
     }
 
     /**
@@ -123,6 +124,10 @@ public class Main {
         } catch (InputMismatchException e) {
             logger.error("Caractere numerique uniquement");
             sc.nextLine();
+            if (mode == 0){
+                logger.info("Veuillez saisir une valeur numérique");
+                mode = sc.nextInt();
+            }
             selectionnerModeDeJeu();
         }
 
