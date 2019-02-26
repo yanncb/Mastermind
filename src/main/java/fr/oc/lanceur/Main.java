@@ -115,26 +115,28 @@ public class Main {
      */
     public static Integer selectionnerModeDeJeu() {
         int mode = 0;
-        try {
-            logger.info("Choisissez votre mode de jeux : ");
-            for (ModeDeJeux modeDeJeux : ModeDeJeux.values()) {
-                logger.info("Tapez {} pour {}", modeDeJeux.getNumero(), modeDeJeux.getNom());
-            }
-            mode = sc.nextInt();
-        } catch (InputMismatchException e) {
-            logger.error("Caractere numerique uniquement");
-            sc.nextLine();
-            if (mode == 0){
-                logger.info("Veuillez saisir une valeur numérique");
+        boolean saisieOk = false;
+        do {
+            try {
+                logger.info("Choisissez votre mode de jeux : ");
+                for (ModeDeJeux modeDeJeux : ModeDeJeux.values()) {
+                    logger.info("Tapez {} pour {}", modeDeJeux.getNumero(), modeDeJeux.getNom());
+                }
                 mode = sc.nextInt();
-            }
-            selectionnerModeDeJeu();
-        }
 
-        if (mode > ModeDeJeux.values().length || mode < 0) {
-            logger.info("Vous avez choisi une valeur hors interval");
-            selectionnerModeDeJeu();
-        }
+                if (mode > ModeDeJeux.values().length || mode <= 0) {
+                    logger.info("Vous avez choisi une valeur hors interval");
+                    saisieOk = false;
+                } else {
+                    saisieOk = true;
+                }
+            } catch (InputMismatchException e) {
+                logger.error("Caractere numerique uniquement");
+                sc.nextLine();
+                saisieOk = false;
+            }
+        } while (!saisieOk);
+
         return mode;
     }
 
@@ -145,21 +147,28 @@ public class Main {
      */
     public static Integer selectionnerJeu() {
         int mode = 0;
-        try {
-            logger.info("Bienvenue, il est temps de choisir votre type de jeu !");
-            for (TypeDeJeux typeDeJeux : TypeDeJeux.values()) {
-                logger.info("Tapez {} pour lancer {}", typeDeJeux.getCode(), typeDeJeux.getNom());
+        boolean saisieOK = false;
+        do {
+            try {
+                logger.info("Bienvenue, il est temps de choisir votre type de jeu !");
+                for (TypeDeJeux typeDeJeux : TypeDeJeux.values()) {
+                    logger.info("Tapez {} pour lancer {}", typeDeJeux.getCode(), typeDeJeux.getNom());
+                }
+                mode = sc.nextInt();
+                if (mode > ModeDeJeux.values().length || mode <= 0) {
+                    logger.info("Vous avez choisi une valeur hors interval");
+                    saisieOK = false;
+                } else {
+                    saisieOK = true;
+                }
+            } catch (InputMismatchException e) {
+                logger.error("Caractere numerique uniquement");
+                sc.nextLine();
+                saisieOK = false;
             }
-            mode = sc.nextInt();
-        } catch (InputMismatchException e) {
-            logger.error("Caractere numerique uniquement");
-            sc.nextLine();
-            selectionnerJeu();
         }
-        if (mode > ModeDeJeux.values().length || mode < 0) {
-            logger.info("Vous avez choisi une valeur hors interval");
-            selectionnerJeu();
-        }
+        while (!saisieOK);
+
         return mode;
     }
 
