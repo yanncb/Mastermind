@@ -24,7 +24,7 @@ public class Mastermind extends Jeu {
      * Permet de lancer le jeu et d'en selectionner un mode!.
      */
     public void jouer() {
-        logger.info("Vous avez  : {} éssais et {} cases à trouver", getNombreDessais(), getNombreDeChiffre());
+        logger.info("Vous avez  : {} essais et {} cases à trouver", getNombreDessais(), getNombreDeChiffre());
         switch (getModeDeJeu()) {
             case CHALLENGER:
                 jouerMastermindChallenger();

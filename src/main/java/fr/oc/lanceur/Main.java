@@ -19,7 +19,7 @@ public class Main {
     /**
      * Classe principale de lancement du programme.
      *
-     * @param args parametre de lancement du main.
+     * @param args paramètre de lancement du main.
      */
     public static void main(String[] args) {
 
@@ -27,10 +27,11 @@ public class Main {
         if (args.length > 0) {
             paramLancement = args[0];
         } else if (ChargementDesProprietes.MOD_DEV_VALUE != null) {
-            logger.info("Pas de parametres, verification dans le fichier de proprietes.");
+            logger.info("Pas de paramètres, verification dans le fichier de propriétes.");
             paramLancement = ChargementDesProprietes.MOD_DEV_VALUE;
         } else {
-            logger.error("Pas de parametres dans les proprietes. Sortie du jeu");
+            logger.error("Pas de paramètres dans les proprie" +
+                    "tes. Sortie du jeu");
             System.exit(0);
         }
 
@@ -184,7 +185,7 @@ public class Main {
             logger.info("Souhaites tu rejouer au même jeu ? Oui (1) / Choisir un autre Jeu (2) / Quitter (3)");
             choixUtilisateur = sc.nextInt();
         } catch (InputMismatchException e) {
-            logger.error("Caractere numerique uniquement");
+            logger.error("Caractère numerique uniquement");
             sc.nextLine();
             retryMod(jeu);
         }
@@ -206,6 +207,7 @@ public class Main {
                 break;
 
             default:
+                retryMod(jeu);
                 break;
         }
     }

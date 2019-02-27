@@ -201,11 +201,7 @@ public class RecherchePlusMoins extends Jeu {
             }
         }
 
-        if (compteur == codeSaisie.length) {
-            return true;
-        } else {
-            return false;
-        }
+        return compteur == codeSaisie.length;
     }
 
     /**
