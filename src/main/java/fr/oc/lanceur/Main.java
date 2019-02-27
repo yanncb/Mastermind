@@ -30,8 +30,7 @@ public class Main {
             logger.info("Pas de paramètres, verification dans le fichier de propriétes.");
             paramLancement = ChargementDesProprietes.MOD_DEV_VALUE;
         } else {
-            logger.error("Pas de paramètres dans les proprie" +
-                    "tes. Sortie du jeu");
+            logger.error("Pas de paramètres dans les proprietes. Sortie du jeu");
             System.exit(0);
         }
 

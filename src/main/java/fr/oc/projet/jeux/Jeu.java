@@ -4,6 +4,7 @@ import fr.oc.projet.enums.ModeDeJeux;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -16,16 +17,10 @@ public abstract class Jeu {
     private static final Logger logger = LogManager.getLogger(Jeu.class);
 
     /**
-     * La classe mere abstraite jeu permet de definir plusieurs parametres communs aux differents jeux.
-     */
-    public Jeu() {
-    }
-
-    /**
      * Permet de lancer le jeu.
      */
-    public void jouer() {
-    }
+    public abstract void jouer();
+
 
     /**
      * Methode qui comme son nom l'indique permet de recuperer les saisie claviers en les mettant dans un tableau de int.
@@ -38,17 +33,26 @@ public abstract class Jeu {
         int[] saisieJoueur = new int[length];
         do {
             String nombreSaisi = scan.nextLine();
-            if (nombreSaisi.length() != length) {
-                logger.info("La longueur du code saisie ne correspond pas a la valeur attendue.");
-                logger.info("Reessayez une saisie sur {}.", length);
-                saisieOk = false;
-            } else {
-                for (int i = 0; i < length; i++) {
-                    saisieJoueur[i] = Integer.parseInt(String.valueOf(nombreSaisi.charAt(i)));// transformer la saisie en tableau.
-                }
 
-                saisieOk = true;
+            try {
+                int test = Integer.valueOf(nombreSaisi);
+                if (nombreSaisi.length() != length) {
+                    logger.info("La longueur du code saisie ne correspond pas a la valeur attendue.");
+                    logger.info("Reessayez une saisie sur {} chiffres.", length);
+                    saisieOk = false;
+                } else {
+                    for (int i = 0; i < length; i++) {
+                        saisieJoueur[i] = Integer.parseInt(String.valueOf(nombreSaisi.charAt(i)));// transformer la saisie en tableau.
+                    }
+
+                    saisieOk = true;
+                }
+            } catch (NumberFormatException s) {
+                logger.error("Utilisez uniquement des caractères numériques.");
+                saisieOk = false;
             }
+
+
         } while (!saisieOk);
 
         return saisieJoueur;

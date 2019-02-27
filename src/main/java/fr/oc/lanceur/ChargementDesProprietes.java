@@ -22,6 +22,7 @@ public class ChargementDesProprietes {
 
 
     static {
+        // lecture du fichier config.properties et chargement dans la variable prop. sert à utiliser le get.properties
         try (InputStream input = ChargementDesProprietes.class.getClassLoader().getResourceAsStream("config.properties")) {
             Properties prop = new Properties();
 

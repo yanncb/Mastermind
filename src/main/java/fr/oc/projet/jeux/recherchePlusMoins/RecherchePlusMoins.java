@@ -24,7 +24,7 @@ public class RecherchePlusMoins extends Jeu {
      * Permet de lancer le jeu et d'en selectionner un mode!.
      */
     public void jouer() {
-        logger.info("Vous avez  : {} éssais et {} cases à trouver", getNombreDessais(), getNombreDeChiffre());
+        logger.info("Vous avez  : {} essais et {} cases à trouver", getNombreDessais(), getNombreDeChiffre());
         switch (getModeDeJeu()) {
             case CHALLENGER:
                 jouerRecherchePlusMoinsChallenger();
@@ -51,7 +51,7 @@ public class RecherchePlusMoins extends Jeu {
      */
     private void jouerRecherchePlusMoinsChallenger() {
 
-        logger.info("Vous êtes en mode : Challenger vous devez tentez de deviner un code que l'ordinateur va generer !");
+        logger.info("Vous jouez à RecherchePlusMoins - challenger vous devez tentez de deviner un code que l'ordinateur va génerer !");
         int[] random = Utilitaire.creationDuRandom(getDevMod());
         int compteur = 0;
         boolean trouve = false;
@@ -70,11 +70,11 @@ public class RecherchePlusMoins extends Jeu {
 
         } while (!trouve && compteur != nbEssais);
         if (trouve) {
-            logger.info("Bravo !!! Tu gagne en {} essais ", compteur);
+            logger.info("Bravo !!! Tu gagnes en {} essais ", compteur);
         }
         if (!trouve && compteur == nbEssais) {
             logger.info("Tu as PERDU !!! tu as atteint tes {} essais ", compteur);
-            logger.info("Le code generé à deviner etait {}" , random);
+            logger.info("Le code géneré à deviner était {}", random);
         }
 
     }
@@ -83,6 +83,8 @@ public class RecherchePlusMoins extends Jeu {
      * Methode qui permet de lancer le jeu en mode Defenseur
      */
     private void jouerRecherchePlusMoinsDefenseur() {
+
+        logger.info("Vous jouez à RecherchePlusMoins - défenseur vous devez tenter de faire deviner un code secret à l'ordinateur !");
 
         int longueur = getNombreDeChiffre();
         int nbEssais = getNombreDessais();
@@ -119,6 +121,8 @@ public class RecherchePlusMoins extends Jeu {
      */
     private void jouerRecherchePlusMoinsDuel() {
 
+        logger.info("Vous jouez à RecherchePlusMoins - duel !");
+
         int longueur = getNombreDeChiffre();
         int nbEssais = getNombreDessais() * 2;
         int[] codeGenereParLordi = Utilitaire.creationDuRandom(getDevMod()); // Virgule dans resultat
@@ -151,7 +155,7 @@ public class RecherchePlusMoins extends Jeu {
                 }
                 premierJouerEstUtilisateur = false;
             } else {
-                logger.info("\nEssai n° {} /  {} de l'{} :",  (compteurIA + 1), getNombreDessais(), IA);
+                logger.info("\nEssai n° {} /  {} de l'{} :", (compteurIA + 1), getNombreDessais(), IA);
                 logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
                 int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
                 trouve = comparerCodeSecretAvecPlusOuMoins(propositionDeLordinateur, codeSecretSaisieParUtilisateur, tabPlusOuMoins);
@@ -168,8 +172,8 @@ public class RecherchePlusMoins extends Jeu {
 
         if (compteurTotal == nbEssais && !trouve) {
             logger.info("{} à perdu. {} essai  atteint.", vainqueur, compteurUtilisateur);
-            if (vainqueur == "Le joueur"){
-                logger.info("Le code generé à deviner etait {}" , codeGenereParLordi);
+            if (vainqueur == "Le joueur") {
+                logger.info("Le code géneré à deviner était {}", codeGenereParLordi);
             }
         }
         if (trouve) {
@@ -187,7 +191,8 @@ public class RecherchePlusMoins extends Jeu {
      * @return sert juste à effectuer la vérification pour la victoire.
      */
 
-    public boolean comparerCodeSecretAvecPlusOuMoins(int[] codeSaisie, int[] codeSecret, String[] tabPlusMoins) {
+    public boolean
+    comparerCodeSecretAvecPlusOuMoins(int[] codeSaisie, int[] codeSecret, String[] tabPlusMoins) {
         int compteur = 0;
         for (int i = 0; i < codeSaisie.length; i++) {
 

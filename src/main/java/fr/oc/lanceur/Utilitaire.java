@@ -16,6 +16,7 @@ public class Utilitaire {
 
     /**
      * Creer un nombre random du nombre cases defini ex :  Nombre de case 4  resultat  : [1,4,5,6]
+     *
      * @param devOrProd savoir si le mode est en developpeur ou en production
      * @return un tableau de chiffres aléatoire
      */
@@ -33,7 +34,7 @@ public class Utilitaire {
         }
 
         if (devOrProd) {
-            logger.info("Le code genere par l'ordinateur aleatoirement est : {}", Arrays.toString(resultatDuRandom));
+            logger.info("Le code genere par l'ordinateur aleatoirement est : {} ", Arrays.toString(resultatDuRandom));
         }
 
         return resultatDuRandom;

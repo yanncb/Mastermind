@@ -5,6 +5,7 @@ import fr.oc.lanceur.Constante;
 import fr.oc.lanceur.Utilitaire;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.Arrays;
 
 
@@ -50,7 +51,7 @@ public class Mastermind extends Jeu {
      * Methode qui permet de lancer le jeu en mode Mastermind simple
      */
     private void jouerMastermindChallenger() {
-        logger.info("Vous êtes en mode : Mastermind vous devez tentez de deviner un code que l'ordinateur va generer !");
+        logger.info("Vous jouez à Mastermind - challenger vous devez tentez de deviner un code que l'ordinateur va génerer !");
         int[] random = Utilitaire.creationDuRandom(getDevMod());
         int compteur = 0;
         int[] reponse = new int[2];
@@ -65,12 +66,12 @@ public class Mastermind extends Jeu {
             compteur++;
         } while (!trouve && compteur != nbEssais);
         if (trouve) {
-            logger.info("Bravo !!! Tu gagne en {} essais ", compteur);
+            logger.info("Bravo !!! Tu gagnes en {} essais ", compteur);
 
         }
         if (!trouve && compteur == nbEssais) {
             logger.info("Tu as PERDU !!! tu as atteint tes {} essais ", compteur);
-            logger.info("Le code generé à deviner etait {}" , random);
+            logger.info("Le code géneré à deviner était {}", random);
         }
 
     }
@@ -79,7 +80,7 @@ public class Mastermind extends Jeu {
      * Methode qui permet de lancer le jeu en mode Mastermind Defenseur
      */
     private void jouerMastermindDefenseur() {
-
+        logger.info("Vous jouez à Mastermind - défenseur vous devez tenter de faire deviner un code secret à l'ordinateur !");
         int longueur = getNombreDeChiffre();
         int nbEssais = getNombreDessais();
         int compteurIA = 0;
@@ -92,7 +93,7 @@ public class Mastermind extends Jeu {
 
         do {
 
-            logger.info("Essai n° {} /  {} de l'{} :", (compteurIA + 1), getNombreDessais(),Constante.IA);
+            logger.info("Essai n° {} /  {} de l'{} :", (compteurIA + 1), getNombreDessais(), Constante.IA);
             int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
             trouve = compareSaisieEtCodeSecret(codeSecretSaisieParUtilisateur, propositionDeLordinateur, reponse);
             logger.info("Proposition {} : {} -> Reponse : {} present, {} bien places.", Constante.IA, propositionDeLordinateur, reponse[0], reponse[1]);
@@ -114,10 +115,10 @@ public class Mastermind extends Jeu {
      * Methode qui permet de lancer le jeu en mode Mastermind Challenger
      */
     private void jouerMastermindDuel() {
-
+        logger.info("Vous jouez à Mastermind - duel !");
         int longueur = getNombreDeChiffre();
         int nbEssais = getNombreDessais() * 2;
-        int[] codeGenereParLordi = Utilitaire.creationDuRandom(getDevMod()); // recuperation du random dans la methode creationduRandom dans utilitaire, et le met dans un tableau codeGenereParLordi
+        int[] codeGenereParLordi = Utilitaire.creationDuRandom(getDevMod());
         int compteurUtilisateur = 0;
         int compteurIA = 0;
         int compteurTotal = 0;
@@ -147,7 +148,7 @@ public class Mastermind extends Jeu {
                 }
                 premierJouerEstUtilisateur = false;
             } else {
-                logger.info("\nEssai n° {} /  {} de l'{} :", (compteurIA + 1), getNombreDessais(),Constante.IA);
+                logger.info("\nEssai n° {} /  {} de l'{} :", (compteurIA + 1), getNombreDessais(), Constante.IA);
                 logger.info("Le code secret que l'ordinateur doit tenter de deviner est {}", codeSecretSaisieParUtilisateur);
                 int[] propositionDeLordinateur = Utilitaire.creationDuRandom(getDevMod());
                 trouve = compareSaisieEtCodeSecret(codeSecretSaisieParUtilisateur, propositionDeLordinateur, reponse);
@@ -164,8 +165,8 @@ public class Mastermind extends Jeu {
 
         if (compteurUtilisateur == nbEssais && !trouve) {
             logger.info("{} à perdu. Essai {} atteint.", vainqueur, compteurUtilisateur);
-            if (vainqueur == "Le joueur"){
-                logger.info("Le code generé à deviner etait {}" , codeGenereParLordi);
+            if (vainqueur == "Le joueur") {
+                logger.info("Le code géneré à deviner etait {}", codeGenereParLordi);
             }
         }
         if (trouve) {
